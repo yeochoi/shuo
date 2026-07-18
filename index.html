@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Mandarin Shadowing Practice</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    background: #fdfbf7;
+    color: #2b2b2b;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px calc(60px + env(safe-area-inset-bottom));
+    -webkit-tap-highlight-color: transparent;
+  }
+  .app {
+    width: 100%;
+    max-width: 480px;
+  }
+  .list-heading {
+    display: none;
+  }
+  h1 {
+    font-size: clamp(16px, 4.5vw, 19px);
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: #2d7d76;
+  }
+  .sub {
+    font-size: clamp(12px, 3.2vw, 13px);
+    color: #8a8a8a;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: clamp(20px, 6vw, 28px) clamp(14px, 4vw, 20px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .progress {
+    font-size: 12px;
+    color: #2d7d76;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin-bottom: 14px;
+  }
+  .hanzi {
+    font-size: clamp(26px, 8vw, 34px);
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .pinyin {
+    font-size: clamp(15px, 4.2vw, 17px);
+    color: #2d7d76;
+    margin-bottom: 10px;
+  }
+  .english {
+    font-size: clamp(13px, 3.5vw, 14px);
+    color: #8a8a8a;
+    font-style: italic;
+  }
+  .status {
+    margin-top: 16px;
+    font-size: 13px;
+    height: 18px;
+    color: #4a90a4;
+    font-weight: 600;
+  }
+  .controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .primary {
+    background: #2d7d76;
+    color: white;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .play-icon {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid white;
+    display: inline-block;
+    margin-left: 2px;
+  }
+  .play-icon.pause {
+    width: 10px;
+    height: 14px;
+    border: none;
+    margin-left: 0;
+    background:
+      linear-gradient(white, white) 0 0/3px 14px no-repeat,
+      linear-gradient(white, white) 7px 0/3px 14px no-repeat;
+  }
+  .secondary {
+    background: #eee;
+    color: #333;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chevron {
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid #555;
+    border-bottom: 2px solid #555;
+    display: inline-block;
+  }
+  .chevron-left {
+    transform: rotate(135deg);
+  }
+  .chevron-right {
+    transform: rotate(-45deg);
+  }
+  .settings {
+    background: white;
+    border-radius: 12px;
+    padding: 6px 18px;
+    margin-bottom: 20px;
+  }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0ede8;
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .setting-control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 190px;
+    max-width: 60%;
+    flex-shrink: 0;
+  }
+  .setting-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2d7d76;
+    flex-shrink: 0;
+  }
+
+  /* custom range slider */
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    min-width: 0;
+    height: 4px;
+    border-radius: 999px;
+    background: #e5e0d8;
+    outline: none;
+    margin: 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2d7d76;
+    border: 3px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    cursor: pointer;
+    margin-top: -8px;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: transparent;
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2d7d76;
+    border: 3px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+  input[type=range]::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: #e5e0d8;
+  }
+
+  /* custom select */
+  .select-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #999;
+    border-bottom: 2px solid #999;
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+  }
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: #faf8f4;
+    border: 1px solid #e5e0d8;
+    border-radius: 10px;
+    padding: 12px 34px 12px 12px;
+    font-size: 16px;
+    font-family: inherit;
+    color: #2b2b2b;
+    cursor: pointer;
+  }
+  select:focus {
+    outline: none;
+    border-color: #2d7d76;
+    box-shadow: 0 0 0 3px rgba(45,125,118,0.15);
+  }
+
+  /* segmented control for pause duration */
+  .segmented {
+    display: flex;
+    width: 100%;
+    background: #faf8f4;
+    border: 1px solid #e5e0d8;
+    border-radius: 10px;
+    padding: 3px;
+    gap: 3px;
+  }
+  .segmented button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #8a8a8a;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .segmented button.active {
+    background: #2d7d76;
+    color: white;
+  }
+  .list {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .list-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0ede8;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .list-item:last-child { border-bottom: none; }
+  .list-item.active {
+    background: #e7f2f0;
+  }
+  .list-item .li-text { flex: 1; min-width: 0; }
+  .list-item .li-han { font-weight: 600; }
+  .list-item .li-pin { font-size: 12px; color: #999; margin-top: 2px; }
+  .li-del {
+    background: none;
+    border: none;
+    color: #c0392b;
+    font-size: 16px;
+    padding: 4px 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .voice-warning {
+    font-size: 12px;
+    color: #c0392b;
+    background: #fdecea;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .accordion-add {
+    background: white;
+    border: 1px solid #cfe4e1;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .add-section {
+    padding: 16px;
+    border-top: 1px solid #e5f0ee;
+  }
+  input[type=text] {
+    width: 100%;
+    border: 1px solid #cfe4e1;
+    border-radius: 8px;
+    padding: 12px 10px;
+    font-size: 16px;
+    font-family: inherit;
+    margin-bottom: 8px;
+  }
+  .add-msg {
+    font-size: 12px;
+    color: #4a90a4;
+    font-weight: 600;
+    min-height: 16px;
+    margin-top: 4px;
+  }
+  .toggle-add {
+    width: 100%;
+    background: white;
+    border: none;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d7d76;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .toggle-add .plus-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2d7d76;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }  @media (max-width: 360px) {
+    body {
+      padding: 18px 12px calc(60px + env(safe-area-inset-bottom));
+    }
+    button {
+      padding: 12px 12px;
+    }
+    .setting-control {
+      max-width: 58%;
+    }
+  }
+
+  @media (min-width: 860px) {
+    body {
+      padding: 48px 32px;
+      align-items: flex-start;
+    }
+    .app {
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .col-main {
+      min-width: 0;
+    }
+    .col-list {
+      min-width: 0;
+      position: sticky;
+      top: 48px;
+    }
+    .list-heading {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #8a8a8a;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+    .list {
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+    .hanzi {
+      font-size: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="col-main">
+  <h1>跟读练习 · Shadowing Practice</h1>
+  <div class="sub">Each sentence plays twice, then pauses so you can repeat it.</div>
+
+  <div class="voice-warning" id="voiceWarning">
+    No Chinese voice was found on this device/browser. Try Chrome, or check your device's language/voice settings for a Mandarin (zh-CN) voice.
+  </div>
+
+  <div class="card">
+    <div class="progress" id="progress">1 / 27</div>
+    <div class="hanzi" id="hanzi">你家有几口人？</div>
+    <div class="pinyin" id="pinyin">Nǐ jiā yǒu jǐ kǒu rén?</div>
+    <div class="english" id="english">What is the size of your family?</div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="controls">
+    <button class="secondary" id="prevBtn"><span class="chevron chevron-left"></span> Prev</button>
+    <button class="primary" id="playBtn"><span class="play-icon" id="playIcon"></span><span id="playLabel">Start</span></button>
+    <button class="secondary" id="nextBtn">Next <span class="chevron chevron-right"></span></button>
+  </div>
+
+  <div class="accordion-add">
+    <button class="toggle-add" id="toggleAddBtn"><span class="plus-icon" id="toggleIcon">+</span> Add sentences</button>
+
+    <div class="add-section" id="addSection" style="display:none;">
+      <input type="text" id="singleHanzi" placeholder="Chinese (e.g. 你喜欢什么？)">
+      <input type="text" id="singlePinyin" placeholder="Pinyin (e.g. Nǐ xǐhuan shénme?)">
+      <input type="text" id="singleEnglish" placeholder="English (optional)">
+      <button class="primary" id="singleAddBtn" style="width:100%;">Add sentence</button>
+      <div class="add-msg" id="singleMsg"></div>
+    </div>
+  </div>
+
+  <div class="settings">
+    <div class="setting-row">
+      <div class="setting-label">Speech rate</div>
+      <div class="setting-control">
+        <input type="range" id="rateSlider" min="0.5" max="1.2" step="0.1" value="0.75">
+        <span class="setting-value" id="rateValue">0.75×</span>
+      </div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">Voice</div>
+      <div class="setting-control">
+        <div class="select-wrap">
+          <select id="voiceSelect"></select>
+        </div>
+      </div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">Pause</div>
+      <div class="setting-control">
+        <div class="segmented" id="pauseSegmented">
+          <button type="button" data-value="1500">1.5s</button>
+          <button type="button" data-value="3000" class="active">3s</button>
+          <button type="button" data-value="5000">5s</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="col-list">
+    <div class="list-heading">Sentence list</div>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<script>
+const defaultSentences = [
+  {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"What is the size of your family?"},
+  {h:"一，二，三，四，五。", p:"Yī, èr, sān, sì, wǔ.", e:""},
+  {h:"六，七，八，九，十。", p:"Liù, qī, bā, jiǔ, shí.", e:""},
+  {h:"我有零个朋友。", p:"Wǒ yǒu líng ge péngyou.", e:"I have zero friends."},
+  {h:"她是我的朋友。", p:"Tā shì wǒ de péngyou.", e:"She is my friend."},
+  {h:"他是谁？", p:"Tā shì shéi?", e:"Who is he?"},
+  {h:"他是我的男性朋友。", p:"Tā shì wǒ de nánxìng péngyou.", e:"He is my male friend."},
+  {h:"你去哪儿？", p:"Nǐ qù nǎr?", e:"Where are you going?"},
+  {h:"哪个人？", p:"Nǎ ge rén?", e:"Which person?"},
+  {h:"他叫什么？", p:"Tā jiào shénme?", e:"What is he called?"},
+  {h:"一个人。", p:"Yí ge rén.", e:"One person."},
+  {h:"一位老师。", p:"Yí wèi lǎoshī.", e:"One teacher."},
+  {h:"他叫什么名字？", p:"Tā jiào shénme míngzi?", e:"What is his name?"},
+  {h:"我不是老师。", p:"Wǒ bú shì lǎoshī.", e:"I am not a teacher."},
+  {h:"他不叫小王。", p:"Tā bú jiào Xiǎo Wáng.", e:"His name isn't Xiao Wang."},
+  {h:"你姓什么？", p:"Nǐ xìng shénme?", e:"What is your family name?"},
+  {h:"你是哪国人？", p:"Nǐ shì nǎ guó rén?", e:"What nationality are you?"},
+  {h:"洗手间在这里。", p:"Xǐshǒujiān zài zhèlǐ.", e:"The restroom is here."},
+  {h:"你妈妈会说汉语吗？", p:"Nǐ māma huì shuō Hànyǔ ma?", e:"Can your mom speak Chinese?"},
+  {h:"我不会做中国菜。", p:"Wǒ bú huì zuò Zhōngguó cài.", e:"I can't cook Chinese food."},
+  {h:"你吃哪国菜？", p:"Nǐ chī nǎ guó cài?", e:"What country's food do you eat?"},
+  {h:"中国菜很好吃。", p:"Zhōngguó cài hěn hǎochī.", e:"Chinese food is very delicious."},
+  {h:"你怎么做菜？", p:"Nǐ zěnme zuò cài?", e:"How do you cook?"},
+  {h:"我会写汉字。", p:"Wǒ huì xiě Hànzì.", e:"I can write Chinese characters."},
+  {h:"这是什么字？", p:"Zhè shì shénme zì?", e:"What character is this?"},
+  {h:"谁会读书？", p:"Shéi huì dú shū?", e:"Who can read?"},
+  {h:"干吗，不叫外卖？", p:"Gànmá, bù jiào wàimài?", e:"Why don't you order takeout?"},
+  {h:"你在干吗？", p:"Nǐ zài gànmá?", e:"What are you doing?"}
+];
+
+let sentences = defaultSentences.slice();
+let idx = 0;
+let playing = false;
+let stopRequested = false;
+let voices = [];
+let selectedVoice = null;
+
+const hanziEl = document.getElementById('hanzi');
+const pinyinEl = document.getElementById('pinyin');
+const englishEl = document.getElementById('english');
+const progressEl = document.getElementById('progress');
+const statusEl = document.getElementById('status');
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const playLabel = document.getElementById('playLabel');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const rateSlider = document.getElementById('rateSlider');
+const voiceSelect = document.getElementById('voiceSelect');
+const pauseSegmented = document.getElementById('pauseSegmented');
+const rateValueEl = document.getElementById('rateValue');
+let pauseValue = 3000;
+const listEl = document.getElementById('list');
+const voiceWarning = document.getElementById('voiceWarning');
+const toggleAddBtn = document.getElementById('toggleAddBtn');
+const toggleIcon = document.getElementById('toggleIcon');
+const addSection = document.getElementById('addSection');
+const singleHanzi = document.getElementById('singleHanzi');
+const singlePinyin = document.getElementById('singlePinyin');
+const singleEnglish = document.getElementById('singleEnglish');
+const singleAddBtn = document.getElementById('singleAddBtn');
+const singleMsg = document.getElementById('singleMsg');
+
+
+const STORAGE_KEY = 'shadowing-sentences-v1';
+
+function loadSentences() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        sentences = parsed;
+      }
+    }
+  } catch (e) {
+    // no saved data yet, keep defaults
+  }
+  render();
+}
+
+function saveSentences() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sentences));
+  } catch (e) {
+    console.error('Could not save sentences', e);
+  }
+}
+
+function renderList() {
+  listEl.innerHTML = '';
+  sentences.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'list-item' + (i === idx ? ' active' : '');
+    const textDiv = document.createElement('div');
+    textDiv.className = 'li-text';
+    textDiv.innerHTML = `<div class="li-han">${escapeHtml(s.h)}</div><div class="li-pin">${escapeHtml(s.p)}</div>`;
+    textDiv.onclick = () => { stopAll(); idx = i; render(); };
+    const delBtn = document.createElement('button');
+    delBtn.className = 'li-del';
+    delBtn.textContent = '✕';
+    delBtn.onclick = (ev) => {
+      ev.stopPropagation();
+      stopAll();
+      sentences.splice(i, 1);
+      if (sentences.length === 0) sentences = defaultSentences.slice();
+      if (idx >= sentences.length) idx = sentences.length - 1;
+      saveSentences();
+      render();
+    };
+    div.appendChild(textDiv);
+    div.appendChild(delBtn);
+    listEl.appendChild(div);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function render() {
+  const s = sentences[idx];
+  hanziEl.textContent = s.h;
+  pinyinEl.textContent = s.p;
+  englishEl.textContent = s.e;
+  progressEl.textContent = `${idx+1} / ${sentences.length}`;
+  renderList();
+  const active = listEl.querySelector('.active');
+  if (active) active.scrollIntoView({block:'nearest'});
+}
+
+function loadVoices() {
+  const allChinese = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+  voices = allChinese.filter(v => v.lang.toLowerCase() === 'zh-cn' || v.lang.toLowerCase() === 'zh');
+  if (voices.length === 0) {
+    // fallback: if no exact zh-CN voice is found, show whatever Chinese voices exist
+    voices = allChinese;
+  }
+  voiceSelect.innerHTML = '';
+  if (voices.length === 0) {
+    voiceWarning.style.display = 'block';
+    const opt = document.createElement('option');
+    opt.textContent = 'No Chinese voice found';
+    voiceSelect.appendChild(opt);
+    return;
+  }
+  voiceWarning.style.display = 'none';
+  voices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${v.name} (${v.lang})`;
+    voiceSelect.appendChild(opt);
+  });
+  selectedVoice = voices[0];
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+voiceSelect.onchange = () => {
+  selectedVoice = voices[voiceSelect.value];
+};
+
+function speak(text) {
+  return new Promise((resolve) => {
+    const utter = new SpeechSynthesisUtterance(text);
+    if (selectedVoice) utter.voice = selectedVoice;
+    utter.lang = 'zh-CN';
+    utter.rate = parseFloat(rateSlider.value);
+    utter.onend = resolve;
+    utter.onerror = resolve;
+    speechSynthesis.speak(utter);
+  });
+}
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function playCurrent() {
+  const s = sentences[idx];
+  statusEl.textContent = 'Speaking (1/2)...';
+  await speak(s.h);
+  if (stopRequested) return;
+  await wait(600);
+  if (stopRequested) return;
+  statusEl.textContent = 'Speaking (2/2)...';
+  await speak(s.h);
+  if (stopRequested) return;
+  statusEl.textContent = 'Your turn — repeat it';
+  await wait(pauseValue);
+}
+
+async function playFrom(startIdx) {
+  playing = true;
+  stopRequested = false;
+  playIcon.classList.add('pause');
+  playLabel.textContent = 'Stop';
+  idx = startIdx;
+  render();
+  for (let i = startIdx; i < sentences.length; i++) {
+    if (stopRequested) break;
+    idx = i;
+    render();
+    await playCurrent();
+  }
+  stopAll();
+}
+
+function stopAll() {
+  speechSynthesis.cancel();
+  stopRequested = true;
+  playing = false;
+  playIcon.classList.remove('pause');
+  playLabel.textContent = 'Start';
+  statusEl.textContent = '';
+}
+
+playBtn.onclick = () => {
+  if (playing) {
+    stopAll();
+  } else {
+    playFrom(idx);
+  }
+};
+
+prevBtn.onclick = () => {
+  stopAll();
+  idx = Math.max(0, idx - 1);
+  render();
+};
+
+nextBtn.onclick = () => {
+  stopAll();
+  idx = Math.min(sentences.length - 1, idx + 1);
+  render();
+};
+
+pauseSegmented.querySelectorAll('button').forEach(btn => {
+  btn.onclick = () => {
+    pauseSegmented.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    pauseValue = parseInt(btn.dataset.value);
+  };
+});
+
+rateSlider.oninput = () => {
+  rateValueEl.textContent = parseFloat(rateSlider.value).toFixed(2) + '×';
+};
+
+toggleAddBtn.onclick = () => {
+  const isHidden = addSection.style.display === 'none';
+  addSection.style.display = isHidden ? 'block' : 'none';
+  toggleIcon.style.transform = isHidden ? 'rotate(45deg)' : 'rotate(0deg)';
+};
+
+singleAddBtn.onclick = () => {
+  const h = singleHanzi.value.trim();
+  const p = singlePinyin.value.trim();
+  const e = singleEnglish.value.trim();
+  if (!h) {
+    singleMsg.textContent = 'Chinese text is required.';
+    singleMsg.style.color = '#c0392b';
+    return;
+  }
+  sentences.push({h, p, e});
+  saveSentences();
+  singleHanzi.value = '';
+  singlePinyin.value = '';
+  singleEnglish.value = '';
+  singleMsg.style.color = '#4a90a4';
+  singleMsg.textContent = 'Added.';
+  render();
+};
+
+loadSentences();
+</script>
+</body>
+</html>

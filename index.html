@@ -255,10 +255,10 @@ select {
     <div class="sheet-body">
       <div class="card" style="margin-top:8px">
         <label class="field"><span>Chinese</span><input class="big" id="inHan" placeholder="你喜欢什么？" autocomplete="off"></label>
-        <label class="field"><span>Pinyin</span><input id="inPin" placeholder="Nǐ xǐhuan shénme?" autocomplete="off"></label>
-        <label class="field"><span>English, optional</span><input id="inEng" placeholder="What do you like?" autocomplete="off"></label>
+        <label class="field"><span>Pinyin</span><input id="inPin" placeholder="Fills in as you type" autocomplete="off"></label>
+        <label class="field"><span>English, optional</span><input id="inEng" placeholder="Fills in as you type" autocomplete="off"></label>
       </div>
-      <div class="list-note">New sentences go to the top, so you practice them next.</div>
+      <div class="list-note" id="addNote">Type the Chinese and pinyin and English fill in for you. You can change them before you add.</div>
     </div>
     <div class="sheet-foot"><button class="btn" id="saveAdd" disabled>Add</button></div>
   </div>
@@ -301,6 +301,7 @@ select {
   </div>
 </div>
 
+<script src="vendor/pinyin-pro.js"></script>
 <script>
 const defaults = [
   {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"What is the size of your family?"},
@@ -512,11 +513,64 @@ $('listBox').onclick = (e) => {
 $('openList').onclick = () => { tab = 'practice'; renderList(); open('listSheet'); };
 
 /* Add */
-function openAdd() { ['inHan','inPin','inEng'].forEach(i => $(i).value = ''); $('saveAdd').disabled = true; open('addSheet'); setTimeout(() => $('inHan').focus(), 250); }
+const ADD_NOTE = 'Type the Chinese and pinyin and English fill in for you. You can change them before you add.';
+let pinEdited = false, engEdited = false, transTimer = null, transRun = 0;
+function openAdd() {
+  ['inHan','inPin','inEng'].forEach(i => $(i).value = '');
+  pinEdited = engEdited = false; transRun++;
+  $('addNote').textContent = ADD_NOTE;
+  $('saveAdd').disabled = true; open('addSheet'); setTimeout(() => $('inHan').focus(), 250);
+}
+
+/* Pinyin, made on the phone. Words the library knows stay joined, like māma. */
+const PUNCT = { '？':'?', '。':'.', '，':',', '！':'!', '、':',', '：':':', '；':';', '“':'"', '”':'"', '（':'(', '）':')' };
+function toPinyin(text) {
+  if (!window.pinyinPro) return '';
+  const { segment, OutputFormat } = window.pinyinPro;
+  let out = '';
+  for (const part of segment(text, { format: OutputFormat.AllSegment })) {
+    const r = part.result.trim();
+    if (PUNCT[r] !== undefined) out = out.trimEnd() + PUNCT[r] + ' ';
+    else if (/[\u3400-\u9fff]/.test(part.origin)) out += r.replace(/\s+/g, '') + ' ';
+    else out += r + ' ';
+  }
+  out = out.replace(/\s+/g, ' ').trim();
+  return out.charAt(0).toUpperCase() + out.slice(1);
+}
+
+/* English, from the free MyMemory service. */
+async function translate(text, run) {
+  $('addNote').textContent = 'Getting the English';
+  try {
+    const url = 'https://api.mymemory.translated.net/get?langpair=zh-CN|en&q=' + encodeURIComponent(text);
+    const r = await fetch(url);
+    const d = await r.json();
+    if (run !== transRun) return;
+    const t = (d && d.responseData && d.responseData.translatedText || '').trim();
+    if (d.responseStatus != 200 || !t || /MYMEMORY|QUERY LENGTH/i.test(t)) throw new Error('no translation');
+    if (!engEdited) $('inEng').value = t;
+    $('addNote').textContent = ADD_NOTE;
+  } catch (e) {
+    if (run !== transRun) return;
+    $('addNote').textContent = "Couldn't get the English right now. You can type it yourself, or add without it.";
+  }
+}
 $('openAdd').onclick = openAdd;
 $('emptyAdd').onclick = openAdd;
-$('inHan').oninput = () => { $('saveAdd').disabled = !$('inHan').value.trim(); };
+$('inHan').oninput = () => {
+  const h = $('inHan').value.trim();
+  $('saveAdd').disabled = !h;
+  const hasHan = /[\u3400-\u9fff]/.test(h);
+  if (!pinEdited) $('inPin').value = hasHan ? toPinyin(h) : '';
+  clearTimeout(transTimer);
+  const run = ++transRun;
+  if (!hasHan) { if (!engEdited) $('inEng').value = ''; $('addNote').textContent = ADD_NOTE; return; }
+  if (!engEdited) transTimer = setTimeout(() => translate(h, run), 700);
+};
+$('inPin').oninput = () => { pinEdited = $('inPin').value.trim() !== ''; };
+$('inEng').oninput = () => { engEdited = $('inEng').value.trim() !== ''; };
 $('saveAdd').onclick = () => {
+  transRun++; clearTimeout(transTimer);
   const h = $('inHan').value.trim(); if (!h) return;
   all.unshift({ h, p: $('inPin').value.trim(), e: $('inEng').value.trim() });
   stop(); idx = 0; render(); renderList();

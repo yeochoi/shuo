@@ -76,6 +76,9 @@ Rules
 - In Learned, Practice again moves a sentence back to Practice and opens it.
 - New sentences go to the top of Practice, so you say them next.
 - Only Chinese is required. Pinyin and English are optional.
+- Pinyin fills in on the phone as you type the Chinese. English comes from the free MyMemory translation service a moment later.
+- Both stay editable. Once you type in a field yourself, Shuo stops filling it.
+- If the English can't be fetched, a calm note says so and you can add without it.
 
 ## Writing
 

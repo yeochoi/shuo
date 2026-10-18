@@ -1,0 +1,45 @@
+/* Shuo, generated from tokens.json. Edit tokens.json, then run node scripts/build-design-system.mjs */
+:root {
+  --primary: #B0283C;
+  --accent-text: #962033;
+  --soft: #FBEAEC;
+  --current: #FCF0F1;
+  --bg: #F7F5F2;
+  --surface: #FFFFFF;
+  --ink: #1E1B2E;
+  --muted: #6B6778;
+  --line: #ECE9E4;
+  --chip: #EFECE7;
+  --chevron: #A9A5B4;
+  --warn-text: #A83C18;
+  --backdrop: #3A3550;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --gutter: 22px;
+  --max-width: 520px;
+  --radius-note: 12px;
+  --radius-card: 16px;
+  --radius-sheet: 18px;
+  --radius-pill: 999px;
+  --shadow-segment: 0 1px 2px rgba(30,27,46,0.1);
+  --size-play: 64px;
+  --size-button: 54px;
+  --size-round: 44px;
+  --size-nav-button: 36px;
+  --size-row: 64px;
+  --size-card: 300px;
+  --font-sans: Outfit, -apple-system, system-ui, sans-serif;
+  --font-han: "Noto Serif SC", "Songti SC", "PingFang SC", serif;
+}
+.sentence { font-family: var(--font-han); font-size: 40px; line-height: 52px; font-weight: 600; }
+.pinyin { font-family: var(--font-sans); font-size: 19px; line-height: 26px; font-weight: 400; }
+.brand { font-family: var(--font-sans); font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.02em; }
+.headline { font-family: var(--font-sans); font-size: 17px; line-height: 22px; font-weight: 600; }
+.list-han { font-family: var(--font-han); font-size: 17px; line-height: 24px; font-weight: 600; }
+.body { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 400; }
+.subline { font-family: var(--font-sans); font-size: 14px; line-height: 18px; font-weight: 400; }
+.note { font-family: var(--font-sans); font-size: 13px; line-height: 19px; font-weight: 400; }
+.section { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }

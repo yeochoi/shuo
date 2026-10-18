@@ -10,28 +10,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Serif+SC:wght@600&display=swap">
+<link rel="stylesheet" href="design-system/tokens.css">
 <style>
-/* Stay Counter design system, with Shuo's own accent */
+/* Colours, type and sizes come from design-system/tokens.css. Only app values live here. */
 :root {
-  --primary: #B0283C;
-  --accent-text: #962033;
-  --soft: #FBEAEC;
-  --current: #FCF0F1;
-  --current-line: #F5D9DD;
-  --bg: #F7F5F2;
-  --surface: #FFFFFF;
-  --ink: #1E1B2E;
-  --muted: #6B6778;
-  --line: #ECE9E4;
-  --chip: #EFECE7;
-  --chip-text: #5E5A6B;
-  --chevron: #A9A5B4;
-  --backdrop: #3A3550;
-  --gutter: 22px;
   --top: env(safe-area-inset-top, 0px);
   --bottom: env(safe-area-inset-bottom, 0px);
-  --font-sans: Outfit, -apple-system, system-ui, sans-serif;
-  --font-han: "Noto Serif SC", "Songti SC", "PingFang SC", serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); }
@@ -54,7 +38,7 @@ svg { display: block; }
   margin-top: 18px; background: var(--surface); border: 1px solid var(--line);
   border-radius: 16px; padding: 20px; min-height: 300px;
 }
-.wrap { max-width: 520px; margin: 0 auto; }
+.wrap { max-width: var(--max-width); margin: 0 auto; }
 .top { display: flex; align-items: center; justify-content: space-between; height: 44px; }
 .brand { display: flex; align-items: baseline; gap: 8px; }
 .brand b { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
@@ -184,7 +168,9 @@ select {
   width: 100%; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg);
   font-family: inherit; font-size: 16px; color: var(--ink); padding: 0 12px; -webkit-appearance: none; appearance: none;
 }
-.warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: #A83C18; }
+.link-row { display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 0 16px; font-size: 15px; color: var(--ink); text-decoration: none; }
+.link-row svg { color: var(--chevron); }
+.warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: var(--warn-text); }
 </style>
 </head>
 <body>
@@ -307,6 +293,10 @@ select {
         </div>
       </div>
       <div class="list-note">Each sentence plays twice, then pauses so you can repeat it.</div>
+      <div class="section">About</div>
+      <div class="card">
+        <a class="link-row" href="design-system/">Design system<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></a>
+      </div>
     </div>
   </div>
 </div>

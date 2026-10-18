@@ -58,7 +58,8 @@ Rules
 
 - No tabs. The main screen is the app.
 - Three round buttons at the top right. + opens New sentence, then Sentences and Settings.
-- Sheets have one rule. × at the top left closes. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
+- Sheets have one rule. Top left leaves. × closes a first screen, ‹ goes back one step, like Design system back to Settings. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
+- Settings has a Design system row that opens a short version of this book inside the app.
 - On laptops sheets open in the middle over a dimmed page.
 
 ## Practice

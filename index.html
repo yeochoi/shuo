@@ -95,6 +95,7 @@ svg { display: block; }
 .got-note { margin-top: 10px; text-align: center; font-size: 13px; line-height: 19px; color: var(--muted); }
 
 /* Empty */
+.empty-hero .pin { color: var(--muted); font-size: 17px; line-height: 24px; }
 .empty-hero .han { font-family: var(--font-sans); font-size: 34px; line-height: 38px; letter-spacing: -0.02em; }
 
 /* Toast */
@@ -106,6 +107,7 @@ svg { display: block; }
 }
 .toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .toast button[hidden] { display: none; }
+.toast.plain { padding: 0 20px; }
 .toast button { border: 0; background: rgba(255,255,255,0.14); color: #fff; border-radius: 999px; height: 34px; padding: 0 14px; font-size: 15px; font-weight: 600; }
 
 /* Sheets */
@@ -188,6 +190,13 @@ select {
 .ds .rule { padding: 12px 16px; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.45; }
 .ds .rule:first-child { border-top: 0; }
 .ds .demo { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.act-row { width: 100%; border: 0; border-top: 1px solid var(--line); background: none; font-family: inherit; text-align: left; display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; min-height: 64px; justify-content: center; }
+.act-row:first-child { border-top: 0; }
+.act-row:disabled { cursor: default; }
+.act-row:disabled .act-t { color: var(--chevron); }
+.act-t { font-size: 15px; line-height: 20px; color: var(--ink); }
+.act-t.warn-t { color: var(--warn-text); }
+.act-s { font-size: 13px; line-height: 19px; color: var(--muted); }
 .warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: var(--warn-text); }
 </style>
 </head>
@@ -241,7 +250,7 @@ select {
   </div>
   <div class="wrap" id="emptyControls" hidden>
     <button class="btn" id="emptyAdd">Add a sentence</button>
-    <div class="got-note">Or open Learned in the list to practice one again.</div>
+    <div class="got-note" id="emptyNote">Or open Learned in the list to practice one again.</div>
   </div>
 </main>
 
@@ -314,6 +323,11 @@ select {
         </div>
       </div>
       <div class="list-note">Each sentence plays twice, then pauses so you can repeat it.</div>
+      <div class="section">Sentences</div>
+      <div class="card">
+        <button class="act-row" id="startOver"><span class="act-t">Start over</span><span class="act-s" id="startOverNote"></span></button>
+        <button class="act-row" id="deleteAll"><span class="act-t warn-t">Delete all sentences</span><span class="act-s" id="deleteAllNote"></span></button>
+      </div>
       <div class="section">About</div>
       <div class="card">
         <button class="link-row" id="openDs">Design system<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -388,7 +402,7 @@ select {
         <div class="rule">The sentence card keeps its height, so Play and Got it never move.</div>
         <div class="rule">Red acts. Play, Got it, pinyin and what you are on. Characters stay ink.</div>
         <div class="rule">Serif for the Chinese you read. Outfit for everything else. 说 in the name uses the same sans as the icon.</div>
-        <div class="rule">Got it moves, never deletes. Only the delete icon removes, and it asks first.</div>
+        <div class="rule">Got it moves, never deletes. Only delete removes, and it always asks first.</div>
         <div class="rule">Top left leaves a sheet. × closes it, ‹ goes back one step. The bottom holds one forward action.</div>
         <div class="rule">White cards with a 1px line and radius 16. No shadows.</div>
       </div>
@@ -437,7 +451,7 @@ const $ = (id) => document.getElementById(id);
 
 let all = defaults.map(s => ({...s}));
 let state = { cur: null, rate: 0.8, pause: 3000, voice: null };
-try { const r = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(r) && r.length) all = r; } catch (e) {}
+try { const r = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(r)) all = r; } catch (e) {}
 try { Object.assign(state, JSON.parse(localStorage.getItem(STATE)) || {}); } catch (e) {}
 
 const save = () => {
@@ -458,9 +472,11 @@ function render() {
   $('emptyControls').hidden = !empty;
   $('hero').classList.toggle('empty-hero', empty);
   if (empty) {
-    $('count').textContent = `${learned().length} learned`;
-    $('han').textContent = 'All learned';
-    $('pin').textContent = 'Add a new sentence to keep practicing.';
+    const none = all.length === 0;
+    $('count').textContent = none ? 'Your list is empty' : `${learned().length} learned`;
+    $('han').textContent = none ? 'No sentences yet' : 'All learned';
+    $('pin').textContent = none ? 'Add one with + to start practicing.' : 'Add a new sentence to keep practicing.';
+    $('emptyNote').hidden = none;
     $('eng').textContent = '';
   } else {
     $('count').textContent = `${idx + 1} of ${list.length}`;
@@ -562,6 +578,7 @@ $('undo').onclick = () => {
 };
 function showToast(t, undo) {
   $('undo').hidden = !undo;
+  $('toast').classList.toggle('plain', !undo);
   $('toastText').textContent = t; $('toast').classList.add('on');
   clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, 4000);
 }
@@ -682,7 +699,26 @@ $('saveAdd').onclick = () => {
 
 /* Settings */
 function syncSeg(id, val) { [...$(id).children].forEach(b => b.classList.toggle('on', +b.dataset.v === +val)); }
-$('openSettings').onclick = () => { syncSeg('speedSeg', state.rate); syncSeg('pauseSeg', state.pause); open('setSheet'); };
+function renderResets() {
+  const n = learned().length, t = all.length;
+  $('startOver').disabled = n === 0;
+  $('startOverNote').textContent = n === 0 ? 'Nothing learned yet' : `Move ${n === 1 ? 'the learned sentence' : `all ${n} learned sentences`} back to Practice`;
+  $('deleteAll').disabled = t === 0;
+  $('deleteAllNote').textContent = t === 0 ? 'No sentences to delete' : `Removes ${t === 1 ? 'the 1 sentence' : `all ${t}`}. This can't be undone.`;
+}
+$('openSettings').onclick = () => { syncSeg('speedSeg', state.rate); syncSeg('pauseSeg', state.pause); renderResets(); open('setSheet'); };
+$('startOver').onclick = () => {
+  const n = learned().length; if (!n) return;
+  if (!confirm(`Start over?\n\n${n === 1 ? 'The learned sentence moves' : `All ${n} learned sentences move`} back to Practice.`)) return;
+  stop(); all.forEach(s => { delete s.l; }); idx = 0; lastLearned = null; render(); renderResets();
+  close('setSheet'); showToast('All sentences back in Practice');
+};
+$('deleteAll').onclick = () => {
+  const t = all.length; if (!t) return;
+  if (!confirm(`Delete all sentences?\n\n${t === 1 ? 'The 1 sentence' : `All ${t} sentences`} will be removed. This can't be undone.`)) return;
+  stop(); all = []; idx = 0; lastLearned = null; state.cur = null; render(); renderResets();
+  close('setSheet'); showToast('All sentences deleted');
+};
 $('speedSeg').onclick = (e) => { const b = e.target.closest('button'); if (b) { state.rate = +b.dataset.v; syncSeg('speedSeg', state.rate); save(); } };
 $('pauseSeg').onclick = (e) => { const b = e.target.closest('button'); if (b) { state.pause = +b.dataset.v; syncSeg('pauseSeg', state.pause); save(); } };
 

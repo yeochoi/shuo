@@ -7,7 +7,7 @@ Say it until it is yours. A calm shadowing app for Mandarin. Each sentence plays
 1. **One sentence at a time.** The screen holds the sentence you are saying now. The list, settings and forms wait in sheets.
 2. **Eyes on the words, thumb on Play.** The sentence card is always the same height, so Play, previous, next and Got it never move. You can tap them without looking.
 3. **Red acts, everything else is quiet.** Red is for Play, Got it, pinyin and what you are on. Ink, muted and the warm off white carry the rest.
-4. **Nothing is lost.** Got it moves a sentence, it does not delete it. Undo stays for a few seconds. Only the delete icon removes a sentence, and it asks first.
+4. **Nothing is lost.** Got it moves a sentence, it does not delete it. Undo stays for a few seconds. Only delete removes sentences, and it always asks first.
 5. **One way to do each thing.** Top left always closes a sheet, the bottom holds the one forward action.
 
 ## Color
@@ -78,6 +78,8 @@ Rules
 - Add a sentence with + on the main screen or Add sentence in the Sentences sheet.
 - New sentences go to the top of Practice, so you say them next.
 - Only Chinese is required. Pinyin and English are optional.
+- Settings has Start over, which moves every learned sentence back to Practice, and Delete all sentences in `warn-text`, which empties the list. Each row says how many it affects, and both ask first.
+- With no sentences at all, the card says No sentences yet and points to +.
 - Pinyin fills in on the phone as you type the Chinese. English comes from the free MyMemory translation service a moment later.
 - Both stay editable. Once you type in a field yourself, Shuo stops filling it.
 - If the English can't be fetched, a calm note says so and you can add without it.

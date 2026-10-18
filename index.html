@@ -1,509 +1,318 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>Mandarin Shadowing Practice</title>
+<meta name="theme-color" content="#F7F5F2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Shuo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Serif+SC:wght@600&display=swap">
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-    background: #fdfbf7;
-    color: #2b2b2b;
-    display: flex;
-    justify-content: center;
-    padding: 24px 16px calc(60px + env(safe-area-inset-bottom));
-    -webkit-tap-highlight-color: transparent;
-  }
-  .app {
-    width: 100%;
-    max-width: 480px;
-  }
-  .list-heading {
-    display: none;
-  }
-  h1 {
-    font-size: clamp(16px, 4.5vw, 19px);
-    font-weight: 600;
-    margin: 0 0 4px;
-    color: #2d7d76;
-  }
-  .sub {
-    font-size: clamp(12px, 3.2vw, 13px);
-    color: #8a8a8a;
-    margin-bottom: 20px;
-  }
-  .card {
-    background: white;
-    border-radius: 16px;
-    padding: clamp(20px, 6vw, 28px) clamp(14px, 4vw, 20px);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .progress {
-    font-size: 12px;
-    color: #2d7d76;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    margin-bottom: 14px;
-  }
-  .hanzi {
-    font-size: clamp(26px, 8vw, 34px);
-    font-weight: 600;
-    margin-bottom: 10px;
-    line-height: 1.4;
-    word-break: break-word;
-  }
-  .pinyin {
-    font-size: clamp(15px, 4.2vw, 17px);
-    color: #2d7d76;
-    margin-bottom: 10px;
-  }
-  .english {
-    font-size: clamp(13px, 3.5vw, 14px);
-    color: #8a8a8a;
-    font-style: italic;
-  }
-  .status {
-    margin-top: 16px;
-    font-size: 13px;
-    height: 18px;
-    color: #4a90a4;
-    font-weight: 600;
-  }
-  .controls {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 16px;
-  }
-  button {
-    border: none;
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    min-height: 44px;
-  }
-  .primary {
-    background: #2d7d76;
-    color: white;
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .play-icon {
-    width: 0;
-    height: 0;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-left: 11px solid white;
-    display: inline-block;
-    margin-left: 2px;
-  }
-  .play-icon.pause {
-    width: 10px;
-    height: 14px;
-    border: none;
-    margin-left: 0;
-    background:
-      linear-gradient(white, white) 0 0/3px 14px no-repeat,
-      linear-gradient(white, white) 7px 0/3px 14px no-repeat;
-  }
-  .secondary {
-    background: #eee;
-    color: #333;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .chevron {
-    width: 7px;
-    height: 7px;
-    border-right: 2px solid #555;
-    border-bottom: 2px solid #555;
-    display: inline-block;
-  }
-  .chevron-left {
-    transform: rotate(135deg);
-  }
-  .chevron-right {
-    transform: rotate(-45deg);
-  }
-  .settings {
-    background: white;
-    border-radius: 12px;
-    padding: 6px 18px;
-    margin-bottom: 20px;
-  }
-  .setting-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 14px 0;
-    border-bottom: 1px solid #f0ede8;
-  }
-  .setting-row:last-child { border-bottom: none; }
-  .setting-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #8a8a8a;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .setting-control {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    width: 190px;
-    max-width: 60%;
-    flex-shrink: 0;
-  }
-  .setting-value {
-    font-size: 13px;
-    font-weight: 700;
-    color: #2d7d76;
-    flex-shrink: 0;
-  }
+/* Stay Counter design system, with Shuo's own accent */
+:root {
+  --primary: #B0283C;
+  --accent-text: #962033;
+  --soft: #FBEAEC;
+  --current: #FCF0F1;
+  --current-line: #F5D9DD;
+  --bg: #F7F5F2;
+  --surface: #FFFFFF;
+  --ink: #1E1B2E;
+  --muted: #6B6778;
+  --line: #ECE9E4;
+  --chip: #EFECE7;
+  --chip-text: #5E5A6B;
+  --chevron: #A9A5B4;
+  --backdrop: #3A3550;
+  --gutter: 22px;
+  --top: env(safe-area-inset-top, 0px);
+  --bottom: env(safe-area-inset-bottom, 0px);
+  --font-sans: Outfit, -apple-system, system-ui, sans-serif;
+  --font-han: "Noto Serif SC", "Songti SC", "PingFang SC", serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+body {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; cursor: pointer; color: inherit; }
+svg { display: block; }
 
-  /* custom range slider */
-  input[type=range] {
-    -webkit-appearance: none;
-    appearance: none;
-    flex: 1;
-    min-width: 0;
-    height: 4px;
-    border-radius: 999px;
-    background: #e5e0d8;
-    outline: none;
-    margin: 0;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #2d7d76;
-    border: 3px solid white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    cursor: pointer;
-    margin-top: -8px;
-  }
-  input[type=range]::-webkit-slider-runnable-track {
-    height: 4px;
-    border-radius: 999px;
-    background: transparent;
-  }
-  input[type=range]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #2d7d76;
-    border: 3px solid white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    cursor: pointer;
-  }
-  input[type=range]::-moz-range-track {
-    height: 4px;
-    border-radius: 999px;
-    background: #e5e0d8;
-  }
+/* Hero */
+.hero {
+  background: var(--bg);
+  color: var(--ink);
+  padding: calc(var(--top) + 14px) var(--gutter) 0;
+}
+#sentenceView {
+  margin-top: 18px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 16px; padding: 20px; min-height: 300px;
+}
+.wrap { max-width: 520px; margin: 0 auto; }
+.top { display: flex; align-items: center; justify-content: space-between; height: 44px; }
+.brand { display: flex; align-items: baseline; gap: 8px; }
+.brand b { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.brand span { font-family: var(--font-han); font-size: 15px; color: var(--accent-text); }
+.top-actions { display: flex; gap: 8px; }
+.round {
+  width: 44px; height: 44px; border-radius: 999px; border: 0;
+  background: var(--chip); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.round:hover { background: var(--line); }
+.count { font-size: 15px; color: var(--muted); }
+.han {
+  font-family: var(--font-han); font-weight: 600;
+  font-size: 40px; line-height: 1.3; margin-top: 10px;
+  word-break: break-word;
+}
+.pin { margin-top: 10px; font-size: 19px; line-height: 26px; color: var(--accent-text); }
+.eng { margin-top: 4px; font-size: 15px; line-height: 20px; color: var(--muted); min-height: 20px; }
+.status {
+  margin-top: 22px; height: 30px; display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 12px; border-radius: 999px; background: var(--soft);
+  font-size: 13px; font-weight: 500; color: var(--accent-text); visibility: hidden;
+}
+.status.on { visibility: visible; }
+.status i { width: 7px; height: 7px; border-radius: 99px; background: var(--primary); animation: pulse 1.2s ease-in-out infinite; }
+.status.turn { background: var(--primary); color: #fff; }
+.status.turn i { background: #fff; animation: none; }
+@keyframes pulse { 50% { opacity: 0.3; } }
 
-  /* custom select */
-  .select-wrap {
-    position: relative;
-    width: 100%;
-  }
-  .select-wrap::after {
-    content: '';
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid #999;
-    border-bottom: 2px solid #999;
-    transform: translateY(-65%) rotate(45deg);
-    pointer-events: none;
-  }
-  select {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    background: #faf8f4;
-    border: 1px solid #e5e0d8;
-    border-radius: 10px;
-    padding: 12px 34px 12px 12px;
-    font-size: 16px;
-    font-family: inherit;
-    color: #2b2b2b;
-    cursor: pointer;
-  }
-  select:focus {
-    outline: none;
-    border-color: #2d7d76;
-    box-shadow: 0 0 0 3px rgba(45,125,118,0.15);
-  }
+/* Controls */
+.controls { padding: 20px var(--gutter) calc(var(--bottom) + 32px); }
+.row-ctrl { display: grid; grid-template-columns: 54px 1fr 54px; gap: 12px; align-items: center; }
+.nav {
+  width: 54px; height: 54px; border-radius: 999px; border: 0; background: var(--chip); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.nav:disabled { opacity: 0.4; cursor: default; }
+.play {
+  height: 64px; border: 0; border-radius: 999px; background: var(--primary); color: #fff;
+  font-size: 17px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.play:active, .nav:active, .got:active { transform: scale(0.98); }
+.got {
+  margin-top: 14px; width: 100%; height: 54px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--accent-text);
+  font-size: 17px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.got-note { margin-top: 10px; text-align: center; font-size: 13px; line-height: 19px; color: var(--muted); }
 
-  /* segmented control for pause duration */
-  .segmented {
-    display: flex;
-    width: 100%;
-    background: #faf8f4;
-    border: 1px solid #e5e0d8;
-    border-radius: 10px;
-    padding: 3px;
-    gap: 3px;
-  }
-  .segmented button {
-    flex: 1;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 0;
-    font-size: 13px;
-    font-weight: 600;
-    color: #8a8a8a;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-  .segmented button.active {
-    background: #2d7d76;
-    color: white;
-  }
-  .list {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .list-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0ede8;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-  }
-  .list-item:last-child { border-bottom: none; }
-  .list-item.active {
-    background: #e7f2f0;
-  }
-  .list-item .li-text { flex: 1; min-width: 0; }
-  .list-item .li-han { font-weight: 600; }
-  .list-item .li-pin { font-size: 12px; color: #999; margin-top: 2px; }
-  .li-del {
-    background: none;
-    border: none;
-    color: #c0392b;
-    font-size: 16px;
-    padding: 4px 6px;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-  .voice-warning {
-    font-size: 12px;
-    color: #c0392b;
-    background: #fdecea;
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 16px;
-    display: none;
-  }
-  .accordion-add {
-    background: white;
-    border: 1px solid #cfe4e1;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    overflow: hidden;
-  }
-  .add-section {
-    padding: 16px;
-    border-top: 1px solid #e5f0ee;
-  }
-  input[type=text] {
-    width: 100%;
-    border: 1px solid #cfe4e1;
-    border-radius: 8px;
-    padding: 12px 10px;
-    font-size: 16px;
-    font-family: inherit;
-    margin-bottom: 8px;
-  }
-  .add-msg {
-    font-size: 12px;
-    color: #4a90a4;
-    font-weight: 600;
-    min-height: 16px;
-    margin-top: 4px;
-  }
-  .toggle-add {
-    width: 100%;
-    background: white;
-    border: none;
-    padding: 14px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #2d7d76;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .toggle-add .plus-icon {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #2d7d76;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    line-height: 1;
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
-  }  @media (max-width: 360px) {
-    body {
-      padding: 18px 12px calc(60px + env(safe-area-inset-bottom));
-    }
-    button {
-      padding: 12px 12px;
-    }
-    .setting-control {
-      max-width: 58%;
-    }
-  }
+/* Empty */
+.empty-hero .han { font-family: var(--font-sans); font-size: 34px; line-height: 38px; letter-spacing: -0.02em; }
 
-  @media (max-width: 859px) {
-    .voice-row {
-      display: none;
-    }
-  }
+/* Toast */
+.toast {
+  position: fixed; left: 50%; bottom: calc(var(--bottom) + 24px); transform: translate(-50%, 20px);
+  background: var(--ink); color: #fff; border-radius: 999px; padding: 0 8px 0 18px; height: 48px;
+  display: flex; align-items: center; gap: 12px; font-size: 15px; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s; white-space: nowrap; z-index: 30;
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast button[hidden] { display: none; }
+.toast button { border: 0; background: rgba(255,255,255,0.14); color: #fff; border-radius: 999px; height: 34px; padding: 0 14px; font-size: 15px; font-weight: 600; }
 
-  @media (min-width: 860px) {
-    body {
-      padding: 48px 32px;
-      align-items: flex-start;
-    }
-    .app {
-      max-width: 980px;
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 32px;
-      align-items: start;
-    }
-    .col-main {
-      min-width: 0;
-    }
-    .col-list {
-      min-width: 0;
-      position: sticky;
-      top: 48px;
-    }
-    .list-heading {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #8a8a8a;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 10px;
-    }
-    .list {
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
-    }
-    .hanzi {
-      font-size: 40px;
-    }
-  }
+/* Sheets */
+.sheet-wrap {
+  position: fixed; inset: 0; z-index: 20; background: var(--backdrop);
+  display: none; justify-content: center; padding-top: calc(var(--top) + 32px);
+}
+.sheet-wrap.on { display: flex; animation: fade 0.18s ease-out; }
+.sheet {
+  width: 100%; max-width: 480px; background: var(--bg); border-radius: 18px 18px 0 0;
+  display: flex; flex-direction: column; min-height: 0; animation: up 0.24s ease-out;
+}
+@media (min-width: 700px) {
+  .sheet-wrap { background: rgba(58,53,80,0.72); padding: 40px 0; align-items: flex-start; }
+  .sheet { border-radius: 18px; max-height: calc(100dvh - 80px); }
+  .han { font-size: 48px; }
+}
+@keyframes fade { from { opacity: 0; } }
+@keyframes up { from { transform: translateY(24px); opacity: 0.6; } }
+.sheet-head {
+  height: 60px; padding: 12px 16px 0; display: grid; grid-template-columns: 64px 1fr 64px;
+  align-items: center; font-size: 17px; font-weight: 600; flex-shrink: 0;
+}
+.sheet-title { text-align: center; }
+.navbtn {
+  width: 36px; height: 36px; border-radius: 999px; border: 0; background: var(--line); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.sheet-body { flex-grow: 1; overflow-y: auto; padding: 4px var(--gutter) 16px; }
+.sheet-foot { padding: 12px var(--gutter) calc(var(--bottom) + 24px); flex-shrink: 0; }
+.btn {
+  width: 100%; height: 54px; border: 0; border-radius: 999px; background: var(--primary); color: #fff;
+  font-size: 17px; font-weight: 600;
+}
+.btn:disabled { opacity: 0.4; cursor: default; }
+
+.seg { display: grid; grid-template-columns: repeat(var(--n, 2), minmax(0,1fr)); gap: 2px; padding: 3px; background: var(--line); border-radius: 999px; }
+.seg button { min-height: 38px; border: 0; background: transparent; border-radius: 999px; font-size: 15px; color: var(--muted); }
+.seg button.on { background: #fff; font-weight: 600; color: var(--accent-text); box-shadow: 0 1px 2px rgba(30,27,46,0.1); }
+
+.section { margin: 20px 0 8px; font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.item { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 8px 10px 16px; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.item.cur { background: var(--current); }
+.item-main { flex: 1; min-width: 0; text-align: left; border: 0; background: none; padding: 0; }
+.item-han { font-family: var(--font-han); font-weight: 600; font-size: 17px; line-height: 24px; }
+.item-pin { font-size: 14px; line-height: 18px; color: var(--muted); margin-top: 2px; }
+.icon-btn { width: 40px; height: 40px; border: 0; background: none; border-radius: 999px; color: var(--chevron); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.icon-btn:hover { background: var(--chip); color: var(--muted); }
+.chip-btn { height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--soft); color: var(--accent-text); font-size: 13px; font-weight: 600; flex-shrink: 0; }
+.list-note { padding: 18px 4px; font-size: 13px; line-height: 19px; color: var(--muted); }
+
+.field { display: block; padding: 12px 16px; border-top: 1px solid var(--line); }
+.field:first-child { border-top: 0; }
+.field span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.field input { width: 100%; border: 0; outline: 0; font-family: inherit; font-size: 17px; color: var(--ink); background: none; padding: 0; }
+.field input.big { font-family: var(--font-han); font-weight: 600; font-size: 22px; }
+.field input::placeholder { color: var(--chevron); }
+
+.set-row { padding: 14px 16px; border-top: 1px solid var(--line); }
+.set-row:first-child { border-top: 0; }
+.set-label { font-size: 15px; margin-bottom: 10px; }
+select {
+  width: 100%; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg);
+  font-family: inherit; font-size: 16px; color: var(--ink); padding: 0 12px; -webkit-appearance: none; appearance: none;
+}
+.warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: #A83C18; }
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="col-main">
-  <h1>跟读练习 · Shadowing Practice</h1>
-  <div class="sub">Each sentence plays twice, then pauses so you can repeat it.</div>
 
-  <div class="voice-warning" id="voiceWarning">
-    No Chinese voice was found on this device/browser. Try Chrome, or check your device's language/voice settings for a Mandarin (zh-CN) voice.
-  </div>
-
-  <div class="card">
-    <div class="progress" id="progress">1 / 27</div>
-    <div class="hanzi" id="hanzi">你家有几口人？</div>
-    <div class="pinyin" id="pinyin">Nǐ jiā yǒu jǐ kǒu rén?</div>
-    <div class="english" id="english">What is the size of your family?</div>
-    <div class="status" id="status"></div>
-  </div>
-
-  <div class="controls">
-    <button class="secondary" id="prevBtn"><span class="chevron chevron-left"></span> Prev</button>
-    <button class="primary" id="playBtn"><span class="play-icon" id="playIcon"></span><span id="playLabel">Start</span></button>
-    <button class="secondary" id="nextBtn">Next <span class="chevron chevron-right"></span></button>
-  </div>
-
-  <div class="accordion-add">
-    <button class="toggle-add" id="toggleAddBtn"><span class="plus-icon" id="toggleIcon">+</span> Add sentences</button>
-
-    <div class="add-section" id="addSection" style="display:none;">
-      <input type="text" id="singleHanzi" placeholder="Chinese (e.g. 你喜欢什么？)">
-      <input type="text" id="singlePinyin" placeholder="Pinyin (e.g. Nǐ xǐhuan shénme?)">
-      <input type="text" id="singleEnglish" placeholder="English (optional)">
-      <button class="primary" id="singleAddBtn" style="width:100%;">Add sentence</button>
-      <div class="add-msg" id="singleMsg"></div>
-    </div>
-  </div>
-
-  <div class="settings">
-    <div class="setting-row">
-      <div class="setting-label">Speech rate</div>
-      <div class="setting-control">
-        <input type="range" id="rateSlider" min="0.5" max="1.2" step="0.1" value="0.75">
-        <span class="setting-value" id="rateValue">0.75×</span>
+<header class="hero" id="hero">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand"><b>Shuo</b><span>跟读</span></div>
+      <div class="top-actions">
+        <button class="round" id="openList" aria-label="Sentences">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1" fill="currentColor"/><circle cx="3.5" cy="12" r="1" fill="currentColor"/><circle cx="3.5" cy="18" r="1" fill="currentColor"/></svg>
+        </button>
+        <button class="round" id="openSettings" aria-label="Settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+        </button>
       </div>
     </div>
-    <div class="setting-row voice-row">
-      <div class="setting-label">Voice</div>
-      <div class="setting-control">
-        <div class="select-wrap">
-          <select id="voiceSelect"></select>
+    <div id="sentenceView">
+      <div class="count" id="count">1 of 27</div>
+      <div class="han" id="han"></div>
+      <div class="pin" id="pin"></div>
+      <div class="eng" id="eng"></div>
+      <div class="status" id="status"><i></i><span id="statusText">Listen</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="controls">
+  <div class="wrap" id="practiceControls">
+    <div class="row-ctrl">
+      <button class="nav" id="prev" aria-label="Previous">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="play" id="play">
+        <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <span id="playLabel">Play</span>
+      </button>
+      <button class="nav" id="next" aria-label="Next">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <button class="got" id="got">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      Got it
+    </button>
+    <div class="got-note" id="gotNote"></div>
+  </div>
+  <div class="wrap" id="emptyControls" hidden>
+    <button class="btn" id="emptyAdd">Add a sentence</button>
+    <div class="got-note">Or open Learned in the list to practice one again.</div>
+  </div>
+</main>
+
+<div class="toast" id="toast"><span id="toastText">Moved to Learned</span><button id="undo">Undo</button></div>
+
+<!-- Sentences sheet -->
+<div class="sheet-wrap" id="listSheet">
+  <div class="sheet">
+    <div class="sheet-head">
+      <button class="navbtn" data-close aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="sheet-title">Sentences</div><div></div>
+    </div>
+    <div class="sheet-body">
+      <div class="seg" id="tabs">
+        <button data-tab="practice" class="on">Practice</button>
+        <button data-tab="learned">Learned</button>
+      </div>
+      <div style="height:16px"></div>
+      <div id="listBox"></div>
+    </div>
+    <div class="sheet-foot"><button class="btn" id="openAdd">Add sentence</button></div>
+  </div>
+</div>
+
+<!-- Add sheet -->
+<div class="sheet-wrap" id="addSheet">
+  <div class="sheet">
+    <div class="sheet-head">
+      <button class="navbtn" data-close aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="sheet-title">New sentence</div><div></div>
+    </div>
+    <div class="sheet-body">
+      <div class="card" style="margin-top:8px">
+        <label class="field"><span>Chinese</span><input class="big" id="inHan" placeholder="你喜欢什么？" autocomplete="off"></label>
+        <label class="field"><span>Pinyin</span><input id="inPin" placeholder="Nǐ xǐhuan shénme?" autocomplete="off"></label>
+        <label class="field"><span>English, optional</span><input id="inEng" placeholder="What do you like?" autocomplete="off"></label>
+      </div>
+      <div class="list-note">New sentences go to the top, so you practice them next.</div>
+    </div>
+    <div class="sheet-foot"><button class="btn" id="saveAdd" disabled>Add</button></div>
+  </div>
+</div>
+
+<!-- Settings sheet -->
+<div class="sheet-wrap" id="setSheet">
+  <div class="sheet">
+    <div class="sheet-head">
+      <button class="navbtn" data-close aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="sheet-title">Settings</div><div></div>
+    </div>
+    <div class="sheet-body">
+      <div class="section">Playback</div>
+      <div class="card">
+        <div class="set-row">
+          <div class="set-label">Speed</div>
+          <div class="seg" style="--n:3" id="speedSeg">
+            <button data-v="0.6">Slow</button><button data-v="0.8">Normal</button><button data-v="1">Natural</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label">Time to repeat</div>
+          <div class="seg" style="--n:3" id="pauseSeg">
+            <button data-v="3000">3 sec</button><button data-v="5000">5 sec</button><button data-v="10000">10 sec</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label">Voice</div>
+          <select id="voiceSel"></select>
+          <div class="warn" id="voiceWarn" hidden>No Chinese voice on this device. Try Safari or Chrome, or add a Mandarin voice in your device settings.</div>
         </div>
       </div>
+      <div class="list-note">Each sentence plays twice, then pauses so you can repeat it.</div>
     </div>
-    <div class="setting-row">
-      <div class="setting-label">Pause</div>
-      <div class="setting-control">
-        <div class="segmented" id="pauseSegmented">
-          <button type="button" data-value="3000" class="active">3s</button>
-          <button type="button" data-value="5000">5s</button>
-          <button type="button" data-value="10000">10s</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <div class="col-list">
-    <div class="list-heading">Sentence list</div>
-    <div class="list" id="list"></div>
   </div>
 </div>
 
 <script>
-const defaultSentences = [
+const defaults = [
   {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"What is the size of your family?"},
   {h:"一，二，三，四，五。", p:"Yī, èr, sān, sì, wǔ.", e:""},
   {h:"六，七，八，九，十。", p:"Liù, qī, bā, jiǔ, shí.", e:""},
@@ -534,252 +343,205 @@ const defaultSentences = [
   {h:"你在干吗？", p:"Nǐ zài gànmá?", e:"What are you doing?"}
 ];
 
-let sentences = defaultSentences.slice();
-let idx = 0;
-let playing = false;
-let stopRequested = false;
-let voices = [];
-let selectedVoice = null;
+// Same key as before, so sentences you already added are kept.
+const KEY = 'shadowing-sentences-v1';
+const STATE = 'shuo-state-v1';
+const $ = (id) => document.getElementById(id);
 
-const hanziEl = document.getElementById('hanzi');
-const pinyinEl = document.getElementById('pinyin');
-const englishEl = document.getElementById('english');
-const progressEl = document.getElementById('progress');
-const statusEl = document.getElementById('status');
-const playBtn = document.getElementById('playBtn');
-const playIcon = document.getElementById('playIcon');
-const playLabel = document.getElementById('playLabel');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const rateSlider = document.getElementById('rateSlider');
-const voiceSelect = document.getElementById('voiceSelect');
-const pauseSegmented = document.getElementById('pauseSegmented');
-const rateValueEl = document.getElementById('rateValue');
-let pauseValue = 3000;
-const listEl = document.getElementById('list');
-const voiceWarning = document.getElementById('voiceWarning');
-const toggleAddBtn = document.getElementById('toggleAddBtn');
-const toggleIcon = document.getElementById('toggleIcon');
-const addSection = document.getElementById('addSection');
-const singleHanzi = document.getElementById('singleHanzi');
-const singlePinyin = document.getElementById('singlePinyin');
-const singleEnglish = document.getElementById('singleEnglish');
-const singleAddBtn = document.getElementById('singleAddBtn');
-const singleMsg = document.getElementById('singleMsg');
+let all = defaults.map(s => ({...s}));
+let state = { cur: null, rate: 0.8, pause: 3000, voice: null };
+try { const r = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(r) && r.length) all = r; } catch (e) {}
+try { Object.assign(state, JSON.parse(localStorage.getItem(STATE)) || {}); } catch (e) {}
 
+const save = () => {
+  try { localStorage.setItem(KEY, JSON.stringify(all)); localStorage.setItem(STATE, JSON.stringify(state)); } catch (e) {}
+};
+const practice = () => all.filter(s => !s.l);
+const learned = () => all.filter(s => s.l);
 
-const STORAGE_KEY = 'shadowing-sentences-v1';
-
-function loadSentences() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        sentences = parsed;
-      }
-    }
-  } catch (e) {
-    // no saved data yet, keep defaults
-  }
-  render();
-}
-
-function saveSentences() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sentences));
-  } catch (e) {
-    console.error('Could not save sentences', e);
-  }
-}
-
-function renderList() {
-  listEl.innerHTML = '';
-  sentences.forEach((s, i) => {
-    const div = document.createElement('div');
-    div.className = 'list-item' + (i === idx ? ' active' : '');
-    const textDiv = document.createElement('div');
-    textDiv.className = 'li-text';
-    textDiv.innerHTML = `<div class="li-han">${escapeHtml(s.h)}</div><div class="li-pin">${escapeHtml(s.p)}</div>`;
-    textDiv.onclick = () => { stopAll(); idx = i; render(); };
-    const delBtn = document.createElement('button');
-    delBtn.className = 'li-del';
-    delBtn.textContent = '✕';
-    delBtn.onclick = (ev) => {
-      ev.stopPropagation();
-      stopAll();
-      sentences.splice(i, 1);
-      if (sentences.length === 0) sentences = defaultSentences.slice();
-      if (idx >= sentences.length) idx = sentences.length - 1;
-      saveSentences();
-      render();
-    };
-    div.appendChild(textDiv);
-    div.appendChild(delBtn);
-    listEl.appendChild(div);
-  });
-}
-
-function escapeHtml(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
-}
+let idx = Math.max(0, practice().findIndex(s => s.h === state.cur));
+let playing = false, runId = 0, lastLearned = null, toastTimer = null;
 
 function render() {
-  const s = sentences[idx];
-  hanziEl.textContent = s.h;
-  pinyinEl.textContent = s.p;
-  englishEl.textContent = s.e;
-  progressEl.textContent = `${idx+1} / ${sentences.length}`;
-  renderList();
-}
-
-function loadVoices() {
-  const allChinese = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
-  voices = allChinese.filter(v => v.lang.toLowerCase() === 'zh-cn' || v.lang.toLowerCase() === 'zh');
-  if (voices.length === 0) {
-    // fallback: if no exact zh-CN voice is found, show whatever Chinese voices exist
-    voices = allChinese;
-  }
-  voiceSelect.innerHTML = '';
-  if (voices.length === 0) {
-    voiceWarning.style.display = 'block';
-    const opt = document.createElement('option');
-    opt.textContent = 'No Chinese voice found';
-    voiceSelect.appendChild(opt);
-    return;
-  }
-  voiceWarning.style.display = 'none';
-  voices.forEach((v, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = `${v.name} (${v.lang})`;
-    voiceSelect.appendChild(opt);
-  });
-  selectedVoice = voices[0];
-}
-
-speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
-
-voiceSelect.onchange = () => {
-  selectedVoice = voices[voiceSelect.value];
-};
-
-function speak(text) {
-  return new Promise((resolve) => {
-    const utter = new SpeechSynthesisUtterance(text);
-    if (selectedVoice) utter.voice = selectedVoice;
-    utter.lang = 'zh-CN';
-    utter.rate = parseFloat(rateSlider.value);
-    utter.onend = resolve;
-    utter.onerror = resolve;
-    speechSynthesis.speak(utter);
-  });
-}
-
-function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function playCurrent() {
-  const s = sentences[idx];
-  statusEl.textContent = 'Speaking (1/2)...';
-  await speak(s.h);
-  if (stopRequested) return;
-  await wait(600);
-  if (stopRequested) return;
-  statusEl.textContent = 'Speaking (2/2)...';
-  await speak(s.h);
-  if (stopRequested) return;
-  statusEl.textContent = 'Your turn — repeat it';
-  await wait(pauseValue);
-}
-
-async function playFrom(startIdx) {
-  playing = true;
-  stopRequested = false;
-  playIcon.classList.add('pause');
-  playLabel.textContent = 'Stop';
-  idx = startIdx;
-  render();
-  for (let i = startIdx; i < sentences.length; i++) {
-    if (stopRequested) break;
-    idx = i;
-    render();
-    await playCurrent();
-  }
-  stopAll();
-}
-
-function stopAll() {
-  speechSynthesis.cancel();
-  stopRequested = true;
-  playing = false;
-  playIcon.classList.remove('pause');
-  playLabel.textContent = 'Start';
-  statusEl.textContent = '';
-}
-
-playBtn.onclick = () => {
-  if (playing) {
-    stopAll();
+  const list = practice();
+  if (idx >= list.length) idx = Math.max(0, list.length - 1);
+  const s = list[idx];
+  const empty = !s;
+  $('practiceControls').hidden = empty;
+  $('emptyControls').hidden = !empty;
+  $('hero').classList.toggle('empty-hero', empty);
+  if (empty) {
+    $('count').textContent = `${learned().length} learned`;
+    $('han').textContent = 'All learned';
+    $('pin').textContent = 'Add a new sentence to keep practicing.';
+    $('eng').textContent = '';
   } else {
-    playFrom(idx);
+    $('count').textContent = `${idx + 1} of ${list.length}`;
+    $('han').textContent = s.h;
+    $('pin').textContent = s.p;
+    $('eng').textContent = s.e || '';
+    state.cur = s.h;
   }
-};
+  const n = learned().length;
+  $('gotNote').textContent = n ? `${n} learned so far` : 'Tap Got it when you can say it easily';
+  $('prev').disabled = idx === 0;
+  $('next').disabled = idx >= list.length - 1;
+  save();
+}
 
-prevBtn.onclick = () => {
-  stopAll();
-  idx = Math.max(0, idx - 1);
+/* Voice */
+let voices = [];
+function loadVoices() {
+  const zh = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().replace('_','-').startsWith('zh'));
+  const cn = zh.filter(v => /zh-cn|cmn/i.test(v.lang.replace('_','-')));
+  voices = cn.length ? cn : zh;
+  const sel = $('voiceSel');
+  sel.innerHTML = '';
+  $('voiceWarn').hidden = voices.length > 0;
+  if (!voices.length) { sel.innerHTML = '<option>No Chinese voice found</option>'; return; }
+  voices.forEach((v, i) => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name; sel.appendChild(o); });
+  if (state.voice && voices.some(v => v.name === state.voice)) sel.value = state.voice;
+}
+if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = loadVoices; loadVoices(); }
+$('voiceSel').onchange = (e) => { state.voice = e.target.value; save(); };
+
+function speak(text, id) {
+  return new Promise(res => {
+    if (id !== runId) return res();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = voices.find(v => v.name === state.voice) || voices[0];
+    if (v) u.voice = v;
+    u.lang = 'zh-CN';
+    u.rate = state.rate;
+    u.onend = res; u.onerror = res;
+    speechSynthesis.speak(u);
+  });
+}
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+function setStatus(text, turn) {
+  $('status').classList.toggle('on', !!text);
+  $('status').classList.toggle('turn', !!turn);
+  $('statusText').textContent = text || '';
+}
+function setPlaying(on) {
+  playing = on;
+  $('playLabel').textContent = on ? 'Pause' : 'Play';
+  $('playIcon').innerHTML = on ? '<rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/>' : '<path d="M7 4.5v15l13-7.5z"/>';
+}
+
+async function run() {
+  const id = ++runId;
+  setPlaying(true);
+  while (id === runId) {
+    const s = practice()[idx];
+    if (!s) break;
+    setStatus('Listen'); await speak(s.h, id); if (id !== runId) return;
+    await wait(600); if (id !== runId) return;
+    setStatus('Listen again'); await speak(s.h, id); if (id !== runId) return;
+    setStatus('Your turn', true); await wait(state.pause); if (id !== runId) return;
+    if (idx >= practice().length - 1) break;
+    idx++; render();
+  }
+  if (id === runId) stop();
+}
+function stop() {
+  runId++;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  setPlaying(false); setStatus('');
+}
+
+$('play').onclick = () => playing ? stop() : run();
+$('prev').onclick = () => { const was = playing; stop(); idx = Math.max(0, idx - 1); render(); if (was) run(); };
+$('next').onclick = () => { const was = playing; stop(); idx = Math.min(practice().length - 1, idx + 1); render(); if (was) run(); };
+
+$('got').onclick = () => {
+  const s = practice()[idx]; if (!s) return;
+  const was = playing; stop();
+  s.l = true; lastLearned = s;
   render();
+  showToast('Moved to Learned', true);
+  if (was && practice().length) run();
 };
-
-nextBtn.onclick = () => {
-  stopAll();
-  idx = Math.min(sentences.length - 1, idx + 1);
-  render();
+$('undo').onclick = () => {
+  if (!lastLearned) return;
+  lastLearned.l = false;
+  idx = practice().indexOf(lastLearned);
+  lastLearned = null; hideToast(); render();
 };
+function showToast(t, undo) {
+  $('undo').hidden = !undo;
+  $('toastText').textContent = t; $('toast').classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, 4000);
+}
+function hideToast() { $('toast').classList.remove('on'); }
 
-pauseSegmented.querySelectorAll('button').forEach(btn => {
-  btn.onclick = () => {
-    pauseSegmented.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    pauseValue = parseInt(btn.dataset.value);
-  };
+/* Sheets */
+function open(id) { hideToast(); $(id).classList.add('on'); }
+function close(id) { $(id).classList.remove('on'); }
+document.querySelectorAll('.sheet-wrap').forEach(w => {
+  w.addEventListener('click', e => { if (e.target === w || e.target.closest('[data-close]')) close(w.id); });
 });
 
-rateSlider.oninput = () => {
-  rateValueEl.textContent = parseFloat(rateSlider.value).toFixed(2) + '×';
-};
+let tab = 'practice';
+const esc = (t) => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
+const trash = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3"/></svg>';
 
-toggleAddBtn.onclick = () => {
-  const isHidden = addSection.style.display === 'none';
-  addSection.style.display = isHidden ? 'block' : 'none';
-  toggleIcon.style.transform = isHidden ? 'rotate(45deg)' : 'rotate(0deg)';
-};
-
-singleAddBtn.onclick = () => {
-  const h = singleHanzi.value.trim();
-  const p = singlePinyin.value.trim();
-  const e = singleEnglish.value.trim();
-  if (!h) {
-    singleMsg.textContent = 'Chinese text is required.';
-    singleMsg.style.color = '#c0392b';
+function renderList() {
+  const p = practice(), l = learned();
+  $('tabs').children[0].textContent = `Practice ${p.length}`;
+  $('tabs').children[1].textContent = `Learned ${l.length}`;
+  [...$('tabs').children].forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  const items = tab === 'practice' ? p : l;
+  if (!items.length) {
+    $('listBox').innerHTML = `<div class="list-note">${tab === 'practice' ? 'Nothing to practice. Add a sentence or bring one back from Learned.' : 'Tap Got it on a sentence you can say easily. It moves here.'}</div>`;
     return;
   }
-  sentences.push({h, p, e});
-  saveSentences();
-  singleHanzi.value = '';
-  singlePinyin.value = '';
-  singleEnglish.value = '';
-  singleMsg.style.color = '#4a90a4';
-  singleMsg.textContent = 'Added.';
-  render();
+  $('listBox').innerHTML = '<div class="card">' + items.map((s, i) => `
+    <div class="item ${tab === 'practice' && i === idx ? 'cur' : ''}">
+      <button class="item-main" data-go="${i}"><div class="item-han">${esc(s.h)}</div><div class="item-pin">${esc(s.p)}</div></button>
+      ${tab === 'learned' ? `<button class="chip-btn" data-back="${i}">Practice again</button>` : ''}
+      <button class="icon-btn" data-del="${i}" aria-label="Delete">${trash}</button>
+    </div>`).join('') + '</div>';
+}
+$('tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) { tab = b.dataset.tab; renderList(); } };
+$('listBox').onclick = (e) => {
+  const items = tab === 'practice' ? practice() : learned();
+  const go = e.target.closest('[data-go]'), back = e.target.closest('[data-back]'), del = e.target.closest('[data-del]');
+  if (del) {
+    const s = items[+del.dataset.del];
+    if (!confirm(`Delete ${s.h}? This can't be undone.`)) return;
+    stop(); all.splice(all.indexOf(s), 1); render(); renderList();
+  } else if (back) {
+    const s = items[+back.dataset.back];
+    s.l = false; stop(); idx = practice().indexOf(s); render(); close('listSheet');
+  } else if (go) {
+    if (tab === 'practice') { stop(); idx = +go.dataset.go; render(); close('listSheet'); }
+  }
+};
+$('openList').onclick = () => { tab = 'practice'; renderList(); open('listSheet'); };
+
+/* Add */
+function openAdd() { ['inHan','inPin','inEng'].forEach(i => $(i).value = ''); $('saveAdd').disabled = true; open('addSheet'); setTimeout(() => $('inHan').focus(), 250); }
+$('openAdd').onclick = openAdd;
+$('emptyAdd').onclick = openAdd;
+$('inHan').oninput = () => { $('saveAdd').disabled = !$('inHan').value.trim(); };
+$('saveAdd').onclick = () => {
+  const h = $('inHan').value.trim(); if (!h) return;
+  all.unshift({ h, p: $('inPin').value.trim(), e: $('inEng').value.trim() });
+  stop(); idx = 0; render(); renderList();
+  close('addSheet'); close('listSheet');
+  lastLearned = null;
+  showToast('Added to the top');
 };
 
-loadSentences();
+/* Settings */
+function syncSeg(id, val) { [...$(id).children].forEach(b => b.classList.toggle('on', +b.dataset.v === +val)); }
+$('openSettings').onclick = () => { syncSeg('speedSeg', state.rate); syncSeg('pauseSeg', state.pause); open('setSheet'); };
+$('speedSeg').onclick = (e) => { const b = e.target.closest('button'); if (b) { state.rate = +b.dataset.v; syncSeg('speedSeg', state.rate); save(); } };
+$('pauseSeg').onclick = (e) => { const b = e.target.closest('button'); if (b) { state.pause = +b.dataset.v; syncSeg('pauseSeg', state.pause); save(); } };
+
+render();
 </script>
 </body>
 </html>

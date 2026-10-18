@@ -481,7 +481,11 @@ let voices = [];
 function loadVoices() {
   const zh = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().replace('_','-').startsWith('zh'));
   const cn = zh.filter(v => /zh-cn|cmn/i.test(v.lang.replace('_','-')));
-  voices = cn.length ? cn : zh;
+  // iPhone can list the same voice twice, an older and a newer copy. Keep one per name, the best quality.
+  const rank = (v) => /premium/i.test(v.voiceURI) ? 3 : /enhanced/i.test(v.voiceURI) ? 2 : v.localService ? 1 : 0;
+  const best = new Map();
+  for (const v of (cn.length ? cn : zh)) { const k = v.name.trim(); if (!best.has(k) || rank(v) > rank(best.get(k))) best.set(k, v); }
+  voices = [...best.values()];
   const sel = $('voiceSel');
   sel.innerHTML = '';
   $('voiceWarn').hidden = voices.length > 0;

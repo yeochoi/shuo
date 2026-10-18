@@ -57,7 +57,7 @@ Rules
 ## Navigation
 
 - No tabs. The main screen is the app.
-- Two round buttons at the top right open the Sentences sheet and Settings.
+- Three round buttons at the top right. + opens New sentence, then Sentences and Settings.
 - Sheets have one rule. × at the top left closes. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
 - On laptops sheets open in the middle over a dimmed page.
 
@@ -74,6 +74,7 @@ Rules
 - The Sentences sheet has two tabs, Practice and Learned, each with its count.
 - In Practice, tapping a sentence jumps to it. The one you are on uses `current`.
 - In Learned, Practice again moves a sentence back to Practice and opens it.
+- Add a sentence with + on the main screen or Add sentence in the Sentences sheet.
 - New sentences go to the top of Practice, so you say them next.
 - Only Chinese is required. Pinyin and English are optional.
 - Pinyin fills in on the phone as you type the Chinese. English comes from the free MyMemory translation service a moment later.

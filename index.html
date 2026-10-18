@@ -185,6 +185,9 @@ select {
     <div class="top">
       <div class="brand"><b>Shuo</b><span>跟读</span></div>
       <div class="top-actions">
+        <button class="round" id="quickAdd" aria-label="Add sentence">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
         <button class="round" id="openList" aria-label="Sentences">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1" fill="currentColor"/><circle cx="3.5" cy="12" r="1" fill="currentColor"/><circle cx="3.5" cy="18" r="1" fill="currentColor"/></svg>
         </button>
@@ -562,6 +565,7 @@ async function translate(text, run) {
 }
 $('openAdd').onclick = openAdd;
 $('emptyAdd').onclick = openAdd;
+$('quickAdd').onclick = openAdd;
 $('inHan').oninput = () => {
   const h = $('inHan').value.trim();
   $('saveAdd').disabled = !h;

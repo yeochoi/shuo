@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shuo design system</title>
+<link rel="icon" type="image/svg+xml" href="../icon.svg">
 <meta name="description" content="Colours, type, components and rules of Shuo, the Mandarin shadowing app.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Noto+Serif+SC:wght@600&display=swap">
 <style>
@@ -123,7 +124,7 @@ footer a, .prose a { color: var(--accent-text); }
   <div class="label">Components</div>
   <a href="#topbar">Top Bar</a><a href="#sentencecard">Sentence Card</a><a href="#statuspill">Status Pill</a><a href="#playcontrols">Play Controls</a><a href="#gotit">Got It</a><a href="#toast">Toast</a><a href="#sheetbar">Sheet Bar</a><a href="#segmentedswitch">Segmented Switch</a><a href="#sentencerow">Sentence Row</a><a href="#formcard">Form Card</a><a href="#button">Button</a>
   <div class="label">Guidelines</div>
-  <a href="#principles">Principles</a><a href="#layout">Layout</a><a href="#navigation">Navigation</a><a href="#practice">Practice</a><a href="#sentences">Sentences</a><a href="#writing">Writing</a>
+  <a href="#principles">Principles</a><a href="#layout">Layout</a><a href="#navigation">Navigation</a><a href="#practice">Practice</a><a href="#sentences">Sentences</a><a href="#icon">Icon</a><a href="#writing">Writing</a>
 </aside>
 <main>
   <div class="cover" id="overview">
@@ -268,6 +269,7 @@ footer a, .prose a { color: var(--accent-text); }
 <h2 class="sec" id="navigation">Navigation</h2><div class="prose"><ul><li>No tabs. The main screen is the app.</li><li>Two round buttons at the top right open the Sentences sheet and Settings.</li><li>Sheets have one rule. × at the top left closes. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.</li><li>On laptops sheets open in the middle over a dimmed page.</li></ul></div>
 <h2 class="sec" id="practice">Practice</h2><div class="prose"><ul><li>Play reads each sentence twice, then pauses for the time chosen in Settings, then moves on. It stops at the end of the list.</li><li>The pill on the card says where you are. Listen, Listen again, then Your turn in solid red.</li><li>Previous and next keep playing if Play was on.</li><li>Got it moves the sentence to Learned and shows a toast with Undo for 4 seconds.</li><li>Shuo opens on the sentence you were on last time.</li></ul></div>
 <h2 class="sec" id="sentences">Sentences</h2><div class="prose"><ul><li>The Sentences sheet has two tabs, Practice and Learned, each with its count.</li><li>In Practice, tapping a sentence jumps to it. The one you are on uses <code>current</code>.</li><li>In Learned, Practice again moves a sentence back to Practice and opens it.</li><li>New sentences go to the top of Practice, so you say them next.</li><li>Only Chinese is required. Pinyin and English are optional.</li><li>Pinyin fills in on the phone as you type the Chinese. English comes from the free MyMemory translation service a moment later.</li><li>Both stay editable. Once you type in a field yourself, Shuo stops filling it.</li><li>If the English can't be fetched, a calm note says so and you can add without it.</li></ul></div>
+<h2 class="sec" id="icon">Icon</h2><div class="prose"><ul><li>说, speak, the word the name comes from, in Noto Sans SC Medium.</li><li>White on <code>primary</code>, a full square. Phones round the corners themselves.</li><li>The character is traced as a shape and centred by its own edges, not by the font baseline, so it sits in the true middle.</li><li><code>icon.svg</code> is the source. The PNG sizes are made from it.</li></ul></div>
 <h2 class="sec" id="writing">Writing</h2><div class="prose"><ul><li>Plain words, sentence case, short. No colons, semicolons or dashes in UI text.</li><li>Talk about the person's action, like Got it, Your turn, Practice again.</li><li>Calm words for problems, like No Chinese voice on this device, with what to try next.</li></ul></div>
 
   <footer>Built from the design-system folder of the <a href="https://github.com/yeochoi/shuo">shuo</a> repository. Shares its foundations with the <a href="https://yeochoi.github.io/stay-counter/design-system/">Stay Counter design system</a>. <a href="../">Open the app</a>.</footer>

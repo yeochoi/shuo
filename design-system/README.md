@@ -80,6 +80,13 @@ Rules
 - Both stay editable. Once you type in a field yourself, Shuo stops filling it.
 - If the English can't be fetched, a calm note says so and you can add without it.
 
+## Icon
+
+- 说, speak, the word the name comes from, in Noto Sans SC Medium.
+- White on `primary`, a full square. Phones round the corners themselves.
+- The character is traced as a shape and centred by its own edges, not by the font baseline, so it sits in the true middle.
+- `icon.svg` is the source. The PNG sizes are made from it.
+
 ## Writing
 
 - Plain words, sentence case, short. No colons, semicolons or dashes in UI text.

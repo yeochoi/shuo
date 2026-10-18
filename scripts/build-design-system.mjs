@@ -104,6 +104,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shuo design system</title>
+<link rel="icon" type="image/svg+xml" href="../icon.svg">
 <meta name="description" content="Colours, type, components and rules of Shuo, the Mandarin shadowing app.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Noto+Serif+SC:wght@600&display=swap">
 <style>

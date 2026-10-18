@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Shuo">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Serif+SC:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Serif+SC:wght@600&family=Noto+Sans+SC:wght@500&display=swap">
 <link rel="stylesheet" href="design-system/tokens.css">
 <style>
 /* Colours, type and sizes come from design-system/tokens.css. Only app values live here. */
@@ -47,7 +47,7 @@ svg { display: block; }
 .top { display: flex; align-items: center; justify-content: space-between; height: 44px; }
 .brand { display: flex; align-items: baseline; gap: 8px; }
 .brand b { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
-.brand span { font-family: var(--font-han); font-size: 15px; color: var(--accent-text); }
+.brand span { font-family: var(--font-mark); font-weight: 500; font-size: 20px; color: var(--accent-text); }
 .top-actions { display: flex; gap: 8px; }
 .round {
   width: 44px; height: 44px; border-radius: 999px; border: 0;
@@ -196,7 +196,7 @@ select {
 <header class="hero" id="hero">
   <div class="wrap">
     <div class="top">
-      <div class="brand"><b>Shuo</b><span>跟读</span></div>
+      <div class="brand"><b>Shuo</b><span>说</span></div>
       <div class="top-actions">
         <button class="round" id="quickAdd" aria-label="Add sentence">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -387,7 +387,7 @@ select {
         <div class="rule">One sentence at a time. Lists, settings and forms wait in sheets.</div>
         <div class="rule">The sentence card keeps its height, so Play and Got it never move.</div>
         <div class="rule">Red acts. Play, Got it, pinyin and what you are on. Characters stay ink.</div>
-        <div class="rule">Serif only for Chinese characters. Outfit for everything else.</div>
+        <div class="rule">Serif for the Chinese you read. Outfit for everything else. 说 in the name uses the same sans as the icon.</div>
         <div class="rule">Got it moves, never deletes. Only the delete icon removes, and it asks first.</div>
         <div class="rule">Top left leaves a sheet. × closes it, ‹ goes back one step. The bottom holds one forward action.</div>
         <div class="rule">White cards with a 1px line and radius 16. No shadows.</div>

@@ -33,6 +33,7 @@
   --size-card: 300px;
   --font-sans: Outfit, -apple-system, system-ui, sans-serif;
   --font-han: "Noto Serif SC", "Songti SC", "PingFang SC", serif;
+  --font-mark: "Noto Sans SC", "PingFang SC", sans-serif;
 }
 .sentence { font-family: var(--font-han); font-size: 40px; line-height: 52px; font-weight: 600; }
 .pinyin { font-family: var(--font-sans); font-size: 19px; line-height: 26px; font-weight: 400; }

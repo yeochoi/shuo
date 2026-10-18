@@ -29,7 +29,7 @@ Rules
 
 ## Typography
 
-Two typefaces from Google Fonts. Outfit for everything in Latin letters and Noto Serif SC for Chinese characters, so the sentence feels like writing and the interface stays quiet.
+Outfit for everything in Latin letters and Noto Serif SC for Chinese characters, so the sentence feels like writing and the interface stays quiet. One exception, 说 in the name and the icon uses Noto Sans SC Medium, so it reads as a mark rather than a sentence.
 
 | Style | Size | Weight | For |
 | --- | --- | --- | --- |
@@ -44,7 +44,7 @@ Two typefaces from Google Fonts. Outfit for everything in Latin letters and Noto
 | `section` | 12 caps | Semibold | Section labels |
 
 Rules
-- Serif only for Chinese characters.
+- Serif for Chinese characters you read. Sans only for 说 in the name and icon.
 - Large Latin text uses minus 0.02em letter spacing.
 
 ## Layout

@@ -80,6 +80,9 @@ Rules
 - Add a sentence with + on the main screen or Add sentence in the Sentences sheet.
 - New sentences go to the top of Practice, so you say them next.
 - Only Chinese is required. Pinyin and English are optional.
+- Edit on the sentence card, or the pencil on a row in Sentences, opens Edit sentence. It is the same form as New sentence with Save, and Delete sentence below the card.
+- Saved pinyin and English stay as they are when you change the Chinese. Clear a field to fill it in again.
+- Edit from the card closes with ×. Edit from the list goes back to it with ‹.
 - Settings has Start over, which moves every learned sentence back to Practice, and Delete all sentences in `warn-text`, which empties the list. Each row says how many it affects, and both ask first.
 - With no sentences at all, the card says No sentences yet and points to +.
 - Pinyin fills in on the phone as you type the Chinese. English comes from the free MyMemory translation service a moment later.

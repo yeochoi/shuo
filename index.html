@@ -59,6 +59,9 @@ svg { display: block; }
 }
 .round:hover { background: var(--line); }
 .count { font-size: 15px; color: var(--muted); }
+.card-top { display: flex; align-items: center; justify-content: space-between; min-height: 20px; }
+.card-edit { border: 0; background: none; padding: 10px 12px; margin: -10px -12px; font-size: 15px; font-weight: 600; color: var(--accent-text); }
+.empty-hero .card-edit { display: none; }
 .han {
   font-family: var(--font-han); font-weight: 600;
   font-size: 40px; line-height: 1.3; margin-top: 10px;
@@ -223,7 +226,7 @@ select {
       </div>
     </div>
     <div id="sentenceView">
-      <div class="count" id="count">1 of 27</div>
+      <div class="card-top"><div class="count" id="count">1 of 27</div><button class="card-edit" id="editCur">Edit</button></div>
       <div class="han" id="han"></div>
       <div class="pin" id="pin"></div>
       <div class="eng" id="eng"></div>
@@ -283,8 +286,8 @@ select {
 <div class="sheet-wrap" id="addSheet">
   <div class="sheet">
     <div class="sheet-head">
-      <button class="navbtn" data-close aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-      <div class="sheet-title">New sentence</div><div></div>
+      <button class="navbtn" id="formNav" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="sheet-title" id="formTitle">New sentence</div><div></div>
     </div>
     <div class="sheet-body">
       <div class="card" style="margin-top:8px">
@@ -293,6 +296,7 @@ select {
         <label class="field"><span>English, optional</span><input id="inEng" placeholder="Fills in as you type" autocomplete="off"></label>
       </div>
       <div class="list-note" id="addNote">Type the Chinese and pinyin and English fill in for you. You can change them before you add.</div>
+      <div class="card" id="editDelete" hidden><button class="act-row" id="deleteOne"><span class="act-t warn-t">Delete sentence</span></button></div>
     </div>
     <div class="sheet-foot"><button class="btn" id="saveAdd" disabled>Add</button></div>
   </div>
@@ -406,7 +410,7 @@ select {
         <div class="rule">The sentence card keeps its height, so Play and Got it never move.</div>
         <div class="rule">Red acts. Play, Got it, pinyin and what you are on. Characters stay ink.</div>
         <div class="rule">Serif for the Chinese you read. Outfit for everything else. 说 in the name uses the same sans as the icon.</div>
-        <div class="rule">Got it moves, never deletes. Only delete removes, and it always asks first.</div>
+        <div class="rule">Got it moves, never deletes. Delete lives in Edit sentence, and it always asks first.</div>
         <div class="rule">Top left leaves a sheet. × closes it, ‹ goes back one step. The bottom holds one forward action.</div>
         <div class="rule">White cards with a 1px line and radius 16. No shadows.</div>
       </div>
@@ -608,12 +612,14 @@ function hideToast() { $('toast').classList.remove('on'); }
 function open(id) { hideToast(); $(id).classList.add('on'); }
 function close(id) { $(id).classList.remove('on'); }
 document.querySelectorAll('.sheet-wrap').forEach(w => {
-  w.addEventListener('click', e => { if (e.target === w || e.target.closest('[data-close]')) close(w.id); });
+  w.addEventListener('click', e => { if (e.target === w || e.target.closest('[data-close]')) { if (w.id === 'addSheet') closeForm(); else close(w.id); } });
 });
 
 let tab = 'practice';
 const esc = (t) => { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; };
-const trash = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3"/></svg>';
+const pencil = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>';
+const BACK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
+const CLOSE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
 function renderList() {
   const p = practice(), l = learned();
@@ -629,17 +635,15 @@ function renderList() {
     <div class="item ${tab === 'practice' && i === idx ? 'cur' : ''}">
       <button class="item-main" data-go="${i}"><div class="item-han">${esc(s.h)}</div><div class="item-pin">${esc(s.p)}</div></button>
       ${tab === 'learned' ? `<button class="chip-btn" data-back="${i}">Practice again</button>` : ''}
-      <button class="icon-btn" data-del="${i}" aria-label="Delete">${trash}</button>
+      <button class="icon-btn" data-edit="${i}" aria-label="Edit">${pencil}</button>
     </div>`).join('') + '</div>';
 }
 $('tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) { tab = b.dataset.tab; renderList(); } };
 $('listBox').onclick = (e) => {
   const items = tab === 'practice' ? practice() : learned();
-  const go = e.target.closest('[data-go]'), back = e.target.closest('[data-back]'), del = e.target.closest('[data-del]');
-  if (del) {
-    const s = items[+del.dataset.del];
-    if (!confirm(`Delete ${s.h}? This can't be undone.`)) return;
-    stop(); all.splice(all.indexOf(s), 1); render(); renderList();
+  const go = e.target.closest('[data-go]'), back = e.target.closest('[data-back]'), ed = e.target.closest('[data-edit]');
+  if (ed) {
+    openEdit(items[+ed.dataset.edit], true);
   } else if (back) {
     const s = items[+back.dataset.back];
     s.l = false; stop(); idx = practice().indexOf(s); render(); close('listSheet');
@@ -652,12 +656,40 @@ $('openList').onclick = () => { tab = 'practice'; renderList(); open('listSheet'
 /* Add */
 const ADD_NOTE = 'Type the Chinese and pinyin and English fill in for you. You can change them before you add.';
 let pinEdited = false, engEdited = false, transTimer = null, transRun = 0;
+const EDIT_NOTE = 'Clear the pinyin or English to fill it in again from the Chinese.';
+let editing = null, editFromList = false;
+function formMode(edit, fromList) {
+  $('formTitle').textContent = edit ? 'Edit sentence' : 'New sentence';
+  $('saveAdd').textContent = edit ? 'Save' : 'Add';
+  $('editDelete').hidden = !edit;
+  // Top left leaves. × closes a first screen, ‹ goes back to the list it came from.
+  $('formNav').innerHTML = fromList && edit ? BACK : CLOSE;
+  $('formNav').setAttribute('aria-label', fromList && edit ? 'Back' : 'Close');
+  $('addNote').textContent = edit ? EDIT_NOTE : ADD_NOTE;
+}
 function openAdd() {
+  editing = null; editFromList = false; formMode(false, false);
   ['inHan','inPin','inEng'].forEach(i => $(i).value = '');
   pinEdited = engEdited = false; transRun++;
-  $('addNote').textContent = ADD_NOTE;
   $('saveAdd').disabled = true; open('addSheet'); setTimeout(() => $('inHan').focus(), 250);
 }
+function openEdit(s, fromList) {
+  if (!s) return;
+  stop(); editing = s; editFromList = !!fromList; formMode(true, editFromList);
+  $('inHan').value = s.h; $('inPin').value = s.p || ''; $('inEng').value = s.e || '';
+  // Saved pinyin and English are kept unless the field is cleared.
+  pinEdited = !!s.p; engEdited = !!s.e; transRun++;
+  $('saveAdd').disabled = !s.h; open('addSheet');
+}
+function closeForm() { transRun++; clearTimeout(transTimer); close('addSheet'); if (editFromList) renderList(); }
+$('formNav').onclick = closeForm;
+$('editCur').onclick = () => openEdit(practice()[idx], false);
+$('deleteOne').onclick = () => {
+  const s = editing; if (!s) return;
+  if (!confirm(`Delete this sentence?\n\n${s.h}\n\nThis can't be undone.`)) return;
+  stop(); all.splice(all.indexOf(s), 1); editing = null; render();
+  closeForm(); if (!editFromList) showToast('Sentence deleted');
+};
 
 /* Pinyin, made on the phone. Words the library knows stay joined, like māma. */
 const PUNCT = { '？':'?', '。':'.', '，':',', '！':'!', '、':',', '：':':', '；':';', '“':'"', '”':'"', '（':'(', '）':')' };
@@ -686,7 +718,7 @@ async function translate(text, run) {
     const t = (d && d.responseData && d.responseData.translatedText || '').trim();
     if (d.responseStatus != 200 || !t || /MYMEMORY|QUERY LENGTH/i.test(t)) throw new Error('no translation');
     if (!engEdited) $('inEng').value = t;
-    $('addNote').textContent = ADD_NOTE;
+    $('addNote').textContent = editing ? EDIT_NOTE : ADD_NOTE;
   } catch (e) {
     if (run !== transRun) return;
     $('addNote').textContent = "Couldn't get the English right now. You can type it yourself, or add without it.";
@@ -702,7 +734,7 @@ $('inHan').oninput = () => {
   if (!pinEdited) $('inPin').value = hasHan ? toPinyin(h) : '';
   clearTimeout(transTimer);
   const run = ++transRun;
-  if (!hasHan) { if (!engEdited) $('inEng').value = ''; $('addNote').textContent = ADD_NOTE; return; }
+  if (!hasHan) { if (!engEdited) $('inEng').value = ''; $('addNote').textContent = editing ? EDIT_NOTE : ADD_NOTE; return; }
   if (!engEdited) transTimer = setTimeout(() => translate(h, run), 700);
 };
 $('inPin').oninput = () => { pinEdited = $('inPin').value.trim() !== ''; };
@@ -710,6 +742,14 @@ $('inEng').oninput = () => { engEdited = $('inEng').value.trim() !== ''; };
 $('saveAdd').onclick = () => {
   transRun++; clearTimeout(transTimer);
   const h = $('inHan').value.trim(); if (!h) return;
+  if (editing) {
+    const s = editing, wasCur = practice()[idx] === s;
+    s.h = h; s.p = $('inPin').value.trim(); s.e = $('inEng').value.trim();
+    if (wasCur) state.cur = h;
+    editing = null; render(); closeForm();
+    if (!editFromList) showToast('Saved');
+    return;
+  }
   all.unshift({ h, p: $('inPin').value.trim(), e: $('inEng').value.trim() });
   stop(); idx = 0; render(); renderList();
   close('addSheet'); close('listSheet');

@@ -6,4 +6,4 @@ One sentence in the Sentences sheet.
 - Rows sit in one white card, divided by `line`.
 - The sentence you are on uses `current`.
 - In Practice, tapping the row opens that sentence. In Learned, Practice again on `soft` moves it back.
-- The delete icon in `chevron` asks before it removes anything.
+- The pencil in `chevron` opens Edit sentence, where the sentence can be changed or deleted.

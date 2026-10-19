@@ -7,3 +7,4 @@ Fields grouped in one card, like New sentence.
 - The note under the card says what is happening, like Getting the English.
 - Optional fields say optional in the label.
 - The bottom button stays disabled until the required field has text.
+- The same card is used for New sentence and Edit sentence. Edit adds a Delete sentence row in `warn-text` below it.

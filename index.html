@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F7F5F2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -23,6 +24,8 @@
   --bottom: env(safe-area-inset-bottom, 0px);
 }
 * { box-sizing: border-box; }
+/* The colour behind the page matches the top of the screen, so the iPhone home screen app shows no fade under the time. */
+html { background: var(--bg); color-scheme: light; }
 html, body { margin: 0; background: var(--bg); }
 body {
   font-family: var(--font-sans);
@@ -30,7 +33,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
 }
-button { font-family: inherit; cursor: pointer; color: inherit; }
+button { font-family: inherit; cursor: pointer; color: inherit; touch-action: manipulation; }
 svg { display: block; }
 
 /* Hero */
@@ -197,6 +200,7 @@ select {
 .act-t { font-size: 15px; line-height: 20px; color: var(--ink); }
 .act-t.warn-t { color: var(--warn-text); }
 .act-s { font-size: 13px; line-height: 19px; color: var(--muted); }
+.voice-tip { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--bg); font-size: 13px; line-height: 19px; color: var(--muted); }
 .warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: var(--warn-text); }
 </style>
 </head>
@@ -319,7 +323,7 @@ select {
         <div class="set-row">
           <div class="set-label">Voice</div>
           <select id="voiceSel"></select>
-          <div class="warn" id="voiceWarn" hidden>No Chinese voice on this device. Try Safari or Chrome, or add a Mandarin voice in your device settings.</div>
+          <div class="voice-tip" id="voiceWarn" hidden>Shuo uses the Chinese voice built into your device. It works best in Safari on iPhone and Mac, and in Chrome on Android and computers. If you hear nothing, add a Mandarin voice in your device settings.</div>
         </div>
       </div>
       <div class="list-note">Each sentence plays twice, then pauses so you can repeat it.</div>
@@ -352,7 +356,7 @@ select {
         <div class="tr"><div class="sentence">你家有几口人？</div><small>40 serif semibold. The sentence</small></div>
         <div class="tr"><div class="pinyin" style="color:var(--accent-text)">Nǐ jiā yǒu jǐ kǒu rén?</div><small>19 regular. Pinyin</small></div>
         <div class="tr"><div class="headline">Play</div><small>17 semibold. Buttons, titles, inputs</small></div>
-        <div class="tr"><div class="body" style="color:var(--muted)">What is the size of your family?</div><small>15 regular. English, count, labels</small></div>
+        <div class="tr"><div class="body" style="color:var(--muted)">How many people are in your family?</div><small>15 regular. English, count, labels</small></div>
         <div class="tr"><div class="note" style="color:var(--muted)">Tap Got it when you can say it easily</div><small>13 regular. Notes, field labels, status</small></div>
         <div class="tr"><div class="section" style="margin:0">Playback</div><small>12 semibold caps. Section labels</small></div>
       </div>
@@ -414,7 +418,7 @@ select {
 <script src="vendor/pinyin-pro.js"></script>
 <script>
 const defaults = [
-  {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"What is the size of your family?"},
+  {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"How many people are in your family?"},
   {h:"一，二，三，四，五。", p:"Yī, èr, sān, sì, wǔ.", e:""},
   {h:"六，七，八，九，十。", p:"Liù, qī, bā, jiǔ, shí.", e:""},
   {h:"我有零个朋友。", p:"Wǒ yǒu líng ge péngyou.", e:"I have zero friends."},
@@ -453,6 +457,8 @@ let all = defaults.map(s => ({...s}));
 let state = { cur: null, rate: 0.8, pause: 3000, voice: null };
 try { const r = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(r)) all = r; } catch (e) {}
 try { Object.assign(state, JSON.parse(localStorage.getItem(STATE)) || {}); } catch (e) {}
+// Sentences saved before the better translation keep the old English, so update that one line.
+all.forEach(x => { if (x.h === '你家有几口人？' && x.e === 'What is the size of your family?') x.e = 'How many people are in your family?'; });
 
 const save = () => {
   try { localStorage.setItem(KEY, JSON.stringify(all)); localStorage.setItem(STATE, JSON.stringify(state)); } catch (e) {}
@@ -504,12 +510,21 @@ function loadVoices() {
   voices = [...best.values()];
   const sel = $('voiceSel');
   sel.innerHTML = '';
-  $('voiceWarn').hidden = voices.length > 0;
-  if (!voices.length) { sel.innerHTML = '<option>No Chinese voice found</option>'; return; }
+  // Voices arrive a moment after the page opens, so the tip only shows once the browser has had time to list them.
+  $('voiceWarn').hidden = voices.length > 0 || !voicesChecked;
+  if (!voices.length) { sel.innerHTML = '<option>Device default</option>'; return; }
   voices.forEach((v, i) => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name; sel.appendChild(o); });
   if (state.voice && voices.some(v => v.name === state.voice)) sel.value = state.voice;
 }
-if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = loadVoices; loadVoices(); }
+let voicesChecked = false;
+const canSpeak = 'speechSynthesis' in window;
+if (canSpeak) {
+  // Some browsers announce the list before it is filled, so only real voices end the wait early.
+  speechSynthesis.onvoiceschanged = () => { if (speechSynthesis.getVoices().length) voicesChecked = true; loadVoices(); };
+  loadVoices();
+  setTimeout(() => { voicesChecked = true; loadVoices(); }, 1500);
+} else { voicesChecked = true; loadVoices(); }
+let voiceTipShown = false;
 $('voiceSel').onchange = (e) => { state.voice = e.target.value; save(); };
 
 function speak(text, id) {
@@ -558,7 +573,12 @@ function stop() {
   setPlaying(false); setStatus('');
 }
 
-$('play').onclick = () => playing ? stop() : run();
+$('play').onclick = () => {
+  if (playing) return stop();
+  if (!canSpeak) return showToast('This browser can\'t speak. Try Safari or Chrome');
+  if (voicesChecked && !voices.length && !voiceTipShown) { voiceTipShown = true; showToast('Can\'t hear it? See Settings for a tip'); }
+  run();
+};
 $('prev').onclick = () => { const was = playing; stop(); idx = Math.max(0, idx - 1); render(); if (was) run(); };
 $('next').onclick = () => { const was = playing; stop(); idx = Math.min(practice().length - 1, idx + 1); render(); if (was) run(); };
 

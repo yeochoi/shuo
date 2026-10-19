@@ -19,7 +19,7 @@ Say it until it is yours. A calm shadowing app for Mandarin. Each sentence plays
 | Ground | `bg`, `surface`, `line` | Screens, cards, dividers |
 | Text | `ink`, `muted` | Characters, English, labels and notes |
 | Quiet | `chip`, `chevron` | Round buttons and quiet icons |
-| Attention | `warn-text` | The one warning, when no Chinese voice is found |
+| Attention | `warn-text` | Delete all sentences, the one action that can't be undone |
 | Overlay | `backdrop` | Behind sheets |
 
 Rules
@@ -50,6 +50,8 @@ Rules
 ## Layout
 
 - Phones use a 22 side margin on every screen and sheet.
+- Pinch zoom always works. Buttons ignore double tap zoom so taps stay quick.
+- The colour behind the page is `bg`, the same as the top of the screen, so the home screen app shows no fade under the time.
 - One column everywhere. On laptops the column stays 520 wide in the middle.
 - The main screen, top to bottom, is the title row, the sentence card, the play row, Got it and one note.
 - Cards are white with a 1px `line` border and `radius-card`. No shadows.
@@ -95,7 +97,7 @@ Rules
 
 - Plain words, sentence case, short. No colons, semicolons or dashes in UI text.
 - Talk about the person's action, like Got it, Your turn, Practice again.
-- Calm words for problems, like No Chinese voice on this device, with what to try next.
+- Calm words for problems, with what to try next. When no Chinese voice is found, Settings explains which browsers work best instead of showing an error.
 
 ## Files
 

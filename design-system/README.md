@@ -31,20 +31,24 @@ Rules
 
 Outfit for everything in Latin letters and Noto Serif SC for Chinese characters, so the sentence feels like writing and the interface stays quiet. One exception, 说 in the name and the icon uses Noto Sans SC Medium, so it reads as a mark rather than a sentence.
 
+Four sizes, two weights, plus the sentence. The same scale runs across Shuo, Stay Counter and Manna.
+
 | Style | Size | Weight | For |
 | --- | --- | --- | --- |
-| `sentence` | 40, 48 on laptop | Semibold serif | The sentence on the card |
-| `pinyin` | 19 | Regular | Pinyin under the sentence |
-| `brand` | 22 | Semibold | Shuo at the top |
-| `headline` | 17 | Semibold | Buttons, sheet titles, inputs |
+| `sentence` | 40, 56 on laptop | Semibold serif | The sentence on the card |
+| `reading` | 17 | Regular | Pinyin under the sentence |
+| `title` | 17 | Semibold | Buttons, sheet titles, inputs, the name |
 | `list-han` | 17 | Semibold serif | Characters in a list row |
-| `body` | 15 | Regular | English, the count, labels |
-| `subline` | 14 | Regular | Pinyin in a list row |
-| `note` | 13 | Regular | Notes, field labels, the status pill, warnings |
-| `section` | 12 caps | Semibold | Section labels |
+| `body` | 15 | Regular | English, labels, settings |
+| `label` | 13 | Semibold | Section labels, the count, Edit, the status pill |
+| `small` | 13 | Regular | Notes, field labels, pinyin in lists, warnings |
+
+Text inputs use 16 or more so iOS does not zoom.
 
 Rules
 - Serif for Chinese characters you read. Sans only for 说 in the name and icon.
+- Only 400 and 600 in Latin text.
+- The sentence sits in the middle of its card. The count and Edit stay at the top, the status pill at the bottom.
 - Large Latin text uses minus 0.02em letter spacing.
 
 ## Layout

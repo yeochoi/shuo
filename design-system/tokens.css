@@ -36,11 +36,9 @@
   --font-mark: "Noto Sans SC", "PingFang SC", sans-serif;
 }
 .sentence { font-family: var(--font-han); font-size: 40px; line-height: 52px; font-weight: 600; }
-.pinyin { font-family: var(--font-sans); font-size: 19px; line-height: 26px; font-weight: 400; }
-.brand { font-family: var(--font-sans); font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.02em; }
-.headline { font-family: var(--font-sans); font-size: 17px; line-height: 22px; font-weight: 600; }
+.reading { font-family: var(--font-sans); font-size: 17px; line-height: 24px; font-weight: 400; }
+.title { font-family: var(--font-sans); font-size: 17px; line-height: 22px; font-weight: 600; }
 .list-han { font-family: var(--font-han); font-size: 17px; line-height: 24px; font-weight: 600; }
 .body { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 400; }
-.subline { font-family: var(--font-sans); font-size: 14px; line-height: 18px; font-weight: 400; }
-.note { font-family: var(--font-sans); font-size: 13px; line-height: 19px; font-weight: 400; }
-.section { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.label { font-family: var(--font-sans); font-size: 13px; line-height: 18px; font-weight: 600; }
+.small { font-family: var(--font-sans); font-size: 13px; line-height: 19px; font-weight: 400; }

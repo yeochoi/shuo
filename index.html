@@ -191,7 +191,7 @@ svg { display: block; }
 .field span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
 .field input { width: 100%; border: 0; outline: 0; font-family: inherit; font-size: 17px; color: var(--ink); background: none; padding: 0; }
 .field input.big { font-family: var(--font-han); font-weight: 600; font-size: 22px; }
-.field input::placeholder { color: var(--chevron); }
+.field input::placeholder { color: var(--muted); }
 
 .set-row { padding: 14px 16px; border-top: 1px solid var(--line); }
 .set-row:first-child { border-top: 0; }
@@ -224,6 +224,10 @@ select {
 .act-s { font-size: 13px; line-height: 19px; color: var(--muted); }
 .voice-tip { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--bg); font-size: 13px; line-height: 19px; color: var(--muted); }
 .warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: var(--warn-text); }
+/* People who turn off motion get no pulsing, sliding or fading. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
 </style>
 </head>
 <body>
@@ -231,7 +235,7 @@ select {
 <header class="hero" id="hero">
   <div class="wrap">
     <div class="top">
-      <div class="brand"><b>Shuo</b><span>说</span></div>
+      <h1 class="brand" style="margin: 0;"><b>Shuo</b><span lang="zh">说</span></h1>
       <div class="top-actions">
         <button class="round" id="quickAdd" aria-label="Add sentence">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -279,9 +283,8 @@ select {
     <button class="btn" id="emptyAdd">Add a sentence</button>
     <div class="got-note" id="emptyNote">Or open Learned in the list to practice one again.</div>
   </div>
+<div class="toast" id="toast" role="status"><span id="toastText">Moved to Learned</span><button id="undo">Undo</button></div>
 </main>
-
-<div class="toast" id="toast"><span id="toastText">Moved to Learned</span><button id="undo">Undo</button></div>
 
 <!-- Sentences sheet -->
 <div class="sheet-wrap" id="listSheet">

@@ -46,7 +46,8 @@ Text inputs use 16 or more so iOS does not zoom. Edit and the status pill use `s
 Rules
 - Serif for Chinese characters you read. Sans only for 说 in the name and icon.
 - Only 400 and 600 in Latin text.
-- The sentence sits in the middle of its card. The count and Edit stay at the top, the status pill at the bottom.
+- Every sentence starts at the same height, 120 from the top of its card, so your eye finds it in one place. Long sentences step down from 40 to 32 to 28 instead of growing the card.
+- On phones the buttons sit at the bottom of the screen and never move. The card fills the space between the top bar and the buttons. The status pill sits at the bottom of the card, only as wide as its words.
 - Large Latin text uses minus 0.02em letter spacing.
 
 ## Layout

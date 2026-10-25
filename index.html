@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Noto+Serif+SC:wght@600&family=Noto+Sans+SC:wght@500&display=swap">
-<link rel="stylesheet" href="design-system/tokens.css?v=202610251720">
+<link rel="stylesheet" href="design-system/tokens.css?v=202610251807">
 <style>
 /* Colours, type and sizes come from design-system/tokens.css. Only app values live here. */
 :root {
@@ -47,9 +47,25 @@ svg { display: block; }
   border-radius: 16px; padding: 20px; min-height: 300px;
   display: flex; flex-direction: column;
 }
-/* The status pill below takes 52, the count above takes 18, so 34 on top puts the sentence in the true middle of the card. */
-.sent-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-top: 34px; }
+/* Every sentence starts at the same height, 120 from the top of the card, so your eye finds it in one place.
+   20 card padding plus 18 for the count, then 82. Long sentences grow downward and get smaller instead of taller. */
+.sent-body { flex: none; padding-top: 82px; }
 .sent-body .han { margin-top: 0; }
+.han.long1 { font-size: 32px; }
+.han.long2 { font-size: 28px; }
+/* Phones. The page fills the screen. Buttons sit at the bottom and never move, the card takes the space above them. */
+@media (max-width: 899px) {
+  body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+  .hero { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .hero > .wrap { flex: 1; display: flex; flex-direction: column; width: 100%; min-height: 0; }
+  #sentenceView { flex: 1; min-height: 0; overflow-y: auto; }
+  .controls { flex-shrink: 0; }
+}
+/* Short phones like the iPhone SE. The sentence starts a little higher so long ones still fit. */
+@media (max-width: 899px) and (max-height: 720px) {
+  .sent-body { padding-top: 46px; }
+  .controls { padding-bottom: calc(var(--bottom) + 20px); }
+}
 .wrap { max-width: var(--max-width); margin: 0 auto; }
 .top { display: flex; align-items: center; justify-content: space-between; height: 44px; }
 .brand { display: flex; align-items: baseline; gap: 8px; }
@@ -72,9 +88,9 @@ svg { display: block; }
   word-break: break-word;
 }
 .pin { margin-top: 10px; font-size: 15px; line-height: 22px; color: var(--accent-text); }
-.eng { margin-top: 4px; font-size: 15px; line-height: 20px; color: var(--muted); min-height: 20px; }
+.eng { margin-top: 4px; margin-bottom: 22px; font-size: 15px; line-height: 22px; color: var(--muted); min-height: 22px; }
 .status {
-  margin-top: 22px; height: 30px; display: inline-flex; align-items: center; gap: 8px;
+  margin-top: auto; align-self: flex-start; flex-shrink: 0; height: 30px; display: inline-flex; align-items: center; gap: 8px;
   padding: 0 12px; border-radius: 999px; background: var(--soft);
   font-size: 13px; font-weight: 600; color: var(--accent-text); visibility: hidden;
 }
@@ -149,7 +165,10 @@ svg { display: block; }
   .hero { padding-top: 24px; }
   /* The card keeps one height per window, shorter on short screens, so everything fits and the buttons never move. */
   #sentenceView { min-height: clamp(240px, 40dvh, 340px); padding: 28px; }
+  .sent-body { padding-top: 40px; }
   .han { font-size: 56px; line-height: 1.3; }
+  .han.long1 { font-size: 44px; }
+  .han.long2 { font-size: 36px; }
   .controls { padding-bottom: 24px; }
 }
 @keyframes fade { from { opacity: 0; } }
@@ -444,7 +463,7 @@ select {
   </div>
 </div>
 
-<script src="vendor/pinyin-pro.js?v=202610251720"></script>
+<script src="vendor/pinyin-pro.js?v=202610251807"></script>
 <script>
 const defaults = [
   {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"How many people are in your family?"},
@@ -510,12 +529,17 @@ function render() {
     const none = all.length === 0;
     $('count').textContent = none ? 'Your list is empty' : `${learned().length} learned`;
     $('han').textContent = none ? 'No sentences yet' : 'All learned';
+    $('han').classList.remove('long1', 'long2');
     $('pin').textContent = none ? 'Add one with + to start practicing.' : 'Add a new sentence to keep practicing.';
     $('emptyNote').hidden = none;
     $('eng').textContent = '';
   } else {
     $('count').textContent = `${idx + 1} of ${list.length}`;
     $('han').textContent = s.h;
+    // Longer sentences step down in size so the card does not have to grow. Counted in characters.
+    const len = [...s.h].length;
+    $('han').classList.toggle('long1', len > 11 && len <= 18);
+    $('han').classList.toggle('long2', len > 18);
     $('pin').textContent = s.p;
     $('eng').textContent = s.e || '';
     state.cur = s.h;

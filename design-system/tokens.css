@@ -36,9 +36,7 @@
   --font-mark: "Noto Sans SC", "PingFang SC", sans-serif;
 }
 .sentence { font-family: var(--font-han); font-size: 40px; line-height: 52px; font-weight: 600; }
-.reading { font-family: var(--font-sans); font-size: 17px; line-height: 24px; font-weight: 400; }
-.title { font-family: var(--font-sans); font-size: 17px; line-height: 22px; font-weight: 600; }
-.list-han { font-family: var(--font-han); font-size: 17px; line-height: 24px; font-weight: 600; }
-.body { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 400; }
-.label { font-family: var(--font-sans); font-size: 13px; line-height: 18px; font-weight: 600; }
+.title { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 600; }
+.body { font-family: var(--font-sans); font-size: 15px; line-height: 22px; font-weight: 400; }
 .small { font-family: var(--font-sans); font-size: 13px; line-height: 19px; font-weight: 400; }
+.list-han { font-family: var(--font-han); font-size: 17px; line-height: 24px; font-weight: 600; }

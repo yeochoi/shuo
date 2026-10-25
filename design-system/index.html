@@ -45,12 +45,10 @@
   --font-mark: "Noto Sans SC", "PingFang SC", sans-serif;
 }
 .sentence { font-family: var(--font-han); font-size: 40px; line-height: 52px; font-weight: 600; }
-.reading { font-family: var(--font-sans); font-size: 17px; line-height: 24px; font-weight: 400; }
-.title { font-family: var(--font-sans); font-size: 17px; line-height: 22px; font-weight: 600; }
-.list-han { font-family: var(--font-han); font-size: 17px; line-height: 24px; font-weight: 600; }
-.body { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 400; }
-.label { font-family: var(--font-sans); font-size: 13px; line-height: 18px; font-weight: 600; }
+.title { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 600; }
+.body { font-family: var(--font-sans); font-size: 15px; line-height: 22px; font-weight: 400; }
 .small { font-family: var(--font-sans); font-size: 13px; line-height: 19px; font-weight: 400; }
+.list-han { font-family: var(--font-han); font-size: 17px; line-height: 24px; font-weight: 600; }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 24px; }
@@ -161,7 +159,7 @@ footer a, .prose a { color: var(--accent-text); }
 
   <h2 class="sec" id="type">Type</h2>
   <p class="lead">Outfit for Latin text and Noto Serif SC for Chinese characters. Sizes shown at real size.</p>
-  <div class="specimens"><div class="spec"><div class="info"><b>sentence</b>40px · 600<br>The sentence on the card. The one thing on the screen, so it is the one size outside the shared scale. 56 on laptops.</div><div class="sample sentence">你家有几口人？</div></div><div class="spec"><div class="info"><b>reading</b>17px · 400<br>Pinyin under the sentence, in accent-text.</div><div class="sample reading">Nǐ jiā yǒu jǐ kǒu rén?</div></div><div class="spec"><div class="info"><b>title</b>17px · 600<br>Buttons, sheet titles, input values and Shuo at the top.</div><div class="sample title">Play</div></div><div class="spec"><div class="info"><b>list-han</b>17px · 600<br>Characters in a list row. The title size in serif.</div><div class="sample list-han">她是我的朋友。</div></div><div class="spec"><div class="info"><b>body</b>15px · 400<br>English on the card, setting labels, segment labels, the toast.</div><div class="sample body">How many people are in your family?</div></div><div class="spec"><div class="info"><b>label</b>13px · 600<br>Section labels, the count, Edit on the card and the status pill. Sentence case, no caps.</div><div class="sample label">Playback</div></div><div class="spec"><div class="info"><b>small</b>13px · 400<br>Notes under buttons and cards, field labels, pinyin in a list row, warnings.</div><div class="sample small">Tap Got it when you can say it easily</div></div></div>
+  <div class="specimens"><div class="spec"><div class="info"><b>sentence</b>40px · 600<br>The sentence on the card. The one thing on the screen, so it sits outside the four styles. 56 on laptops.</div><div class="sample sentence">你家有几口人？</div></div><div class="spec"><div class="info"><b>title</b>15px · 600<br>Section headers, buttons, sheet titles and Shuo at the top. Same size as body, set apart by weight only.</div><div class="sample title">Playback</div></div><div class="spec"><div class="info"><b>body</b>15px · 400<br>Pinyin under the sentence in accent-text, English in muted, setting labels, segment labels, the toast.</div><div class="sample body">Nǐ jiā yǒu jǐ kǒu rén?</div></div><div class="spec"><div class="info"><b>small</b>13px · 400<br>The count, notes under buttons, field labels, pinyin in a list row, warnings. Edit and the status pill use it in semibold.</div><div class="sample small">Tap Got it when you can say it easily</div></div><div class="spec"><div class="info"><b>list-han</b>17px · 600<br>Characters in a list row. Chinese stays 17 so the serif strokes stay clear.</div><div class="sample list-han">她是我的朋友。</div></div></div>
 
   <h2 class="sec" id="scale">Spacing and shape</h2>
   <div class="scales">
@@ -186,11 +184,11 @@ footer a, .prose a { color: var(--accent-text); }
 <div style="background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;min-height:300px">
 <div style="display:flex;justify-content:space-between"><div class="body" style="color:var(--muted)">1 of 28</div><div class="body" style="font-weight:600;color:var(--accent-text)">Edit</div></div>
 <div class="sentence" style="margin-top:10px">你家有几口人？</div>
-<div class="reading" style="margin-top:10px;color:var(--accent-text)">Nǐ jiā yǒu jǐ kǒu rén?</div>
+<div class="body" style="margin-top:10px;color:var(--accent-text)">Nǐ jiā yǒu jǐ kǒu rén?</div>
 <div class="body" style="margin-top:4px;color:var(--muted)">How many people are in your family?</div>
 <div class="small" style="margin-top:22px;height:30px;display:inline-flex;align-items:center;gap:8px;padding:0 12px;border-radius:999px;background:var(--soft);color:var(--accent-text);font-weight:600"><i style="width:7px;height:7px;border-radius:99px;background:var(--primary)"></i>Listen</div>
 </div></div>
-</div><div class="guide"><h3>Sentence Card</h3><p class="lead">The one thing on the main screen. The sentence you are saying now.</p><ul><li>White <code>surface</code> card, 1px <code>line</code> border, <code>radius-card</code>, 20 padding, at least <code>size-card</code> tall so the buttons below never move.</li><li>Edit sits at the top right in semibold <code>accent-text</code> and opens Edit sentence.</li><li>Top to bottom, the count in <code>body</code> <code>muted</code>, the characters in <code>sentence</code> <code>ink</code>, pinyin in <code>reading</code> <code>accent-text</code>, English in <code>body</code> <code>muted</code>.</li><li>English is optional. When it is empty the line keeps its space.</li><li>The StatusPill sits at the bottom while playing.</li></ul></div></section>
+</div><div class="guide"><h3>Sentence Card</h3><p class="lead">The one thing on the main screen. The sentence you are saying now.</p><ul><li>White <code>surface</code> card, 1px <code>line</code> border, <code>radius-card</code>, 20 padding, at least <code>size-card</code> tall so the buttons below never move.</li><li>Edit sits at the top right in semibold <code>accent-text</code> and opens Edit sentence.</li><li>Top to bottom, the count in <code>body</code> <code>muted</code>, the characters in <code>sentence</code> <code>ink</code>, pinyin in <code>body</code> <code>accent-text</code>, English in <code>body</code> <code>muted</code>.</li><li>English is optional. When it is empty the line keeps its space.</li><li>The StatusPill sits at the bottom while playing.</li></ul></div></section>
 <section class="comp" id="statuspill"><div class="stage">
 
 <div style="font-family:var(--font-sans);background:var(--bg);color:var(--ink);padding:16px;max-width:380px;width:100%">

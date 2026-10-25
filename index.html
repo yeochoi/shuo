@@ -131,6 +131,24 @@ svg { display: block; }
   .sheet { border-radius: 18px; max-height: calc(100dvh - 80px); }
   .han { font-size: 48px; }
 }
+/* Hint only where there is a keyboard and a mouse. */
+.key-hint { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .key-hint { display: flex; justify-content: center; gap: 20px; margin-top: 18px; font-size: 13px; color: var(--muted); }
+  .key-hint span { display: inline-flex; align-items: center; gap: 6px; }
+  kbd { font-family: var(--font-sans); font-size: 12px; min-width: 24px; height: 24px; padding: 0 7px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; background: var(--surface); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; }
+}
+/* Laptops. Same one column, a little wider, sitting in the middle of the screen with larger characters. */
+@media (min-width: 900px) and (min-height: 640px) {
+  body { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; }
+  .wrap { max-width: 600px; }
+  .hero { padding-top: 0; }
+  #sentenceView { min-height: 340px; padding: 28px; }
+  .han { font-size: 56px; line-height: 1.3; }
+  .pin { font-size: 22px; line-height: 30px; }
+  .eng { font-size: 17px; line-height: 24px; }
+  .controls { padding-bottom: 48px; }
+}
 @keyframes fade { from { opacity: 0; } }
 @keyframes up { from { transform: translateY(24px); opacity: 0.6; } }
 .sheet-head {
@@ -254,6 +272,7 @@ select {
       Got it
     </button>
     <div class="got-note" id="gotNote"></div>
+    <div class="key-hint" id="keyHint"><span><kbd>Space</kbd> Play</span><span><kbd>←</kbd><kbd>→</kbd> Move</span><span><kbd>Enter</kbd> Got it</span></div>
   </div>
   <div class="wrap" id="emptyControls" hidden>
     <button class="btn" id="emptyAdd">Add a sentence</button>
@@ -790,6 +809,25 @@ function renderDs() {
 }
 $('openDs').onclick = () => { renderDs(); $('setSheet').classList.remove('on'); open('dsSheet'); $('dsSheet').querySelector('.sheet-body').scrollTop = 0; };
 $('dsBack').onclick = () => { close('dsSheet'); open('setSheet'); };
+
+/* Keyboard on laptops. Space plays or pauses, arrows move, Enter is Got it, Escape closes a sheet. */
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const openSheet = document.querySelector('.sheet-wrap.on');
+  if (e.key === 'Escape' && openSheet) {
+    e.preventDefault();
+    if (openSheet.id === 'addSheet') closeForm();
+    else if (openSheet.id === 'dsSheet') $('dsBack').click();
+    else close(openSheet.id);
+    return;
+  }
+  if (openSheet || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  const empty = !practice().length;
+  if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); if (!empty) $('play').click(); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); if (!$('next').disabled) $('next').click(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); if (!$('prev').disabled) $('prev').click(); }
+  else if (e.key === 'Enter') { e.preventDefault(); if (!empty) $('got').click(); }
+});
 
 render();
 </script>

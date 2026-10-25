@@ -52,7 +52,8 @@ Rules
 - Phones use a 22 side margin on every screen and sheet.
 - Pinch zoom always works. Buttons ignore double tap zoom so taps stay quick.
 - The colour behind the page is `bg`, the same as the top of the screen, so the home screen app shows no fade under the time.
-- One column everywhere. On laptops the column stays 520 wide in the middle.
+- One column everywhere. On laptops the column grows to 600 and sits in the vertical middle of the screen, with the characters at 56.
+- On devices with a keyboard and mouse, a quiet hint under Got it shows the shortcuts.
 - The main screen, top to bottom, is the title row, the sentence card, the play row, Got it and one note.
 - Cards are white with a 1px `line` border and `radius-card`. No shadows.
 
@@ -71,6 +72,7 @@ Rules
 - Previous and next keep playing if Play was on.
 - Got it moves the sentence to Learned and shows a toast with Undo for 4 seconds.
 - Shuo opens on the sentence you were on last time.
+- On a keyboard, Space plays or pauses, the left and right arrows move, Enter is Got it, and Escape closes a sheet. Keys do nothing while you type or while a sheet is open.
 
 ## Sentences
 

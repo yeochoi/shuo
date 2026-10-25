@@ -6,7 +6,7 @@ Say it until it is yours. A calm shadowing app for Mandarin. Each sentence plays
 
 1. **One sentence at a time.** The screen holds the sentence you are saying now. The list, settings and forms wait in sheets.
 2. **Eyes on the words, thumb on Play.** The sentence card is always the same height, so Play, previous, next and Got it never move. You can tap them without looking.
-3. **Red acts, everything else is quiet.** Red is for Play, Got it, pinyin and what you are on. Ink, muted and the warm off white carry the rest.
+3. **Red acts, everything else is quiet.** Red is for Play, Got it, pinyin and what you are on. Ink, muted and the warm white carry the rest.
 4. **Nothing is lost.** Got it moves a sentence, it does not delete it. Undo stays for a few seconds. Only delete removes sentences, and it always asks first.
 5. **One way to do each thing.** Top left always closes a sheet, the bottom holds the one forward action.
 
@@ -18,7 +18,7 @@ Say it until it is yours. A calm shadowing app for Mandarin. Each sentence plays
 | Current | `current` | The sentence you are on in the list |
 | Ground | `bg`, `surface`, `line` | Screens, cards, dividers |
 | Text | `ink`, `muted` | Characters, English, labels and notes |
-| Quiet | `chip`, `chevron` | Round buttons and quiet icons |
+| Quiet | `chip`, `chevron` | The disabled previous button and quiet icons |
 | Attention | `warn-text` | Delete all sentences, the one action that can't be undone |
 | Overlay | `backdrop` | Behind sheets |
 
@@ -63,7 +63,8 @@ Rules
 ## Navigation
 
 - No tabs. The main screen is the app.
-- Three round buttons at the top right. + opens New sentence, then Sentences and Settings.
+- Three round buttons at the top right. + opens New sentence, then Sentences and Settings. They are glass, the same as Manna's floating controls. White at 72 percent, blur 20, saturate 1.6, a soft shadow and a 1px inner highlight. 44 wide with `ink` icons.
+- Glass is only for controls that float. Cards, sheets and the Play row stay solid.
 - Sheets have one rule. Top left leaves. × closes a first screen, ‹ goes back one step, like Design system back to Settings. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
 - Settings has a Design system row that opens a short version of this book inside the app.
 - On laptops sheets open in the middle over a dimmed page.

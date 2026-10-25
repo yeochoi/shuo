@@ -139,15 +139,16 @@ svg { display: block; }
   kbd { font-family: var(--font-sans); font-size: 12px; min-width: 24px; height: 24px; padding: 0 7px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; background: var(--surface); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; }
 }
 /* Laptops. Same one column, a little wider, sitting in the middle of the screen with larger characters. */
-@media (min-width: 900px) and (min-height: 640px) {
+@media (min-width: 900px) {
   body { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; }
   .wrap { max-width: 600px; }
-  .hero { padding-top: 0; }
-  #sentenceView { min-height: 340px; padding: 28px; }
+  .hero { padding-top: 24px; }
+  /* The card keeps one height per window, shorter on short screens, so everything fits and the buttons never move. */
+  #sentenceView { min-height: clamp(240px, 40dvh, 340px); padding: 28px; }
   .han { font-size: 56px; line-height: 1.3; }
   .pin { font-size: 22px; line-height: 30px; }
   .eng { font-size: 17px; line-height: 24px; }
-  .controls { padding-bottom: 48px; }
+  .controls { padding-bottom: 24px; }
 }
 @keyframes fade { from { opacity: 0; } }
 @keyframes up { from { transform: translateY(24px); opacity: 0.6; } }

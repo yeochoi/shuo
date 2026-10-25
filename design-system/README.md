@@ -31,17 +31,18 @@ Rules
 
 Outfit for everything in Latin letters and Noto Serif SC for Chinese characters, so the sentence feels like writing and the interface stays quiet. One exception, 说 in the name and the icon uses Noto Sans SC Medium, so it reads as a mark rather than a sentence.
 
-Four text styles in three sizes, plus Chinese. The same scale runs across Shuo, Stay Counter and Manna.
+Five text styles like iOS, plus Chinese. The same scale runs across Shuo, Stay Counter and Manna.
 
 | Style | Size | Weight | For |
 | --- | --- | --- | --- |
 | `sentence` | 40, 56 on laptop | Semibold serif | The sentence on the card |
-| `title` | 15 | Semibold | Section headers, buttons, sheet titles, the name |
-| `body` | 15 | Regular | Pinyin, English, labels, settings |
+| `section` | 20 | Semibold | Section headers, like Playback and Sentences. 32 above, 12 below |
+| `title` | 17 | Semibold | Buttons, sheet titles, the name |
+| `body` | 17 | Regular | Pinyin, English, labels, settings. Like iOS body text |
 | `small` | 13 | Regular | The count, notes, field labels, pinyin in lists |
 | `list-han` | 17 | Semibold serif | Characters in a list row |
 
-Text inputs use 16 or more so iOS does not zoom. Edit and the status pill use `small` in semibold, the only exceptions.
+Text inputs use 17, so iOS does not zoom. No other exceptions.
 
 Rules
 - Serif for Chinese characters you read. Sans only for 说 in the name and icon.
@@ -63,8 +64,9 @@ Rules
 ## Navigation
 
 - No tabs. The main screen is the app.
-- Three round buttons at the top right. + opens New sentence, then Sentences and Settings. They are glass, the same as Manna's floating controls. White at 72 percent, blur 20, saturate 1.6, a soft shadow and a 1px inner highlight. 44 wide with `ink` icons.
-- Glass is only for controls that float. Cards, sheets and the Play row stay solid.
+- Three round buttons at the top right. + opens New sentence, then Sentences and Settings.
+- Every round button is the same flat grey circle. `chip`, 44 wide, a 20 icon with a 2 line in `ink`, no shadow, no line. That covers the top buttons, previous and next, and the sheet close. A disabled button keeps its circle and only fades its icon to `chevron`.
+- Layers follow iOS. Things that float over content are glass with a shadow. Things on the page are flat. Nothing in Shuo floats, so everything is flat.
 - Sheets have one rule. Top left leaves. × closes a first screen, ‹ goes back one step, like Design system back to Settings. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
 - Settings has a Design system row that opens a short version of this book inside the app.
 - On laptops sheets open in the middle over a dimmed page.

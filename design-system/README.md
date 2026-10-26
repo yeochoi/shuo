@@ -66,6 +66,7 @@ Rules
 - No tabs. The main screen is the app.
 - Three round buttons at the top right. + opens New sentence, then Sentences and Settings.
 - Every round button is the same flat grey circle. `chip`, 44 wide, a 20 icon with a 2 line in `ink`, no shadow, no line. That covers the top buttons, previous and next, and the sheet close. A disabled button keeps its circle and only fades its icon to `chevron`.
+- Destructive actions always go last. A single one is plain coral text, centered. Two or more related ones are grouped in one card. They always ask first.
 - Layers follow iOS. Things that float over content are glass with a shadow. Things on the page are flat. Nothing in Shuo floats, so everything is flat.
 - Sheets have one rule. Top left leaves. × closes a first screen, ‹ goes back one step, like Design system back to Settings. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
 - Settings has a Design system row that opens a short version of this book inside the app.

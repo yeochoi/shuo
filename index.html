@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Noto+Serif+SC:wght@600&family=Noto+Sans+SC:wght@500&display=swap">
-<link rel="stylesheet" href="design-system/tokens.css?v=202610252249">
+<link rel="stylesheet" href="design-system/tokens.css?v=202610261233">
 <style>
 /* Colours, type and sizes come from design-system/tokens.css. Only app values live here. */
 :root {
@@ -243,6 +243,12 @@ select {
 .act-row:disabled .act-t { color: var(--chevron); }
 .act-t { font-size: 17px; line-height: 22px; color: var(--ink); }
 .act-t.warn-t { color: var(--warn-text); }
+/* Delete is plain coral text, centered at the bottom, the same in all three apps. It always asks first. */
+.del-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 24px; text-align: center; }
+.del-wrap[hidden] { display: none; }
+.text-btn { border: 0; background: none; font-family: inherit; font-size: 17px; line-height: 22px; font-weight: 600; color: var(--warn-text); padding: 11px 16px; min-height: 44px; border-radius: 12px; }
+.text-btn:disabled { color: var(--chevron); cursor: default; }
+.text-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .act-s { font-size: 13px; line-height: 19px; color: var(--muted); }
 .voice-tip { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--bg); font-size: 13px; line-height: 19px; color: var(--muted); }
 .warn { margin-top: 12px; font-size: 13px; line-height: 19px; color: var(--warn-text); }
@@ -355,7 +361,7 @@ select {
         <label class="field"><span>English, optional</span><input id="inEng" placeholder="Fills in as you type" autocomplete="off"></label>
       </div>
       <div class="list-note" id="addNote">Type the Chinese and pinyin and English fill in for you. You can change them before you add.</div>
-      <div class="card" id="editDelete" hidden><button class="act-row" id="deleteOne"><span class="act-t warn-t">Delete sentence</span></button></div>
+      <div class="del-wrap" id="editDelete" hidden><button class="text-btn" id="deleteOne">Delete sentence</button></div>
     </div>
     <div class="sheet-foot"><button class="btn" id="saveAdd" disabled>Add</button></div>
   </div>
@@ -390,14 +396,14 @@ select {
         </div>
       </div>
       <div class="list-note">Each sentence plays twice, then pauses so you can repeat it.</div>
+      <div class="section">About</div>
+      <div class="card">
+        <button class="link-row" id="openDs">Design system<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
       <div class="section">Sentences</div>
       <div class="card">
         <button class="act-row" id="startOver"><span class="act-t">Start over</span><span class="act-s" id="startOverNote"></span></button>
         <button class="act-row" id="deleteAll"><span class="act-t warn-t">Delete all sentences</span><span class="act-s" id="deleteAllNote"></span></button>
-      </div>
-      <div class="section">About</div>
-      <div class="card">
-        <button class="link-row" id="openDs">Design system<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
   </div>
@@ -468,6 +474,7 @@ select {
         <div class="rule">The sentence card keeps its height, so Play and Got it never move.</div>
         <div class="rule">Red acts. Play, Got it, pinyin and what you are on. Characters stay ink.</div>
         <div class="rule">Serif for the Chinese you read. Outfit for everything else. 说 in the name uses the same sans as the icon.</div>
+        <div class="rule">Destructive actions always go last. A single one is plain coral text, centered. Two or more related ones are grouped in one card. They always ask first.</div>
         <div class="rule">Got it moves, never deletes. Delete lives in Edit sentence, and it always asks first.</div>
         <div class="rule">Top left leaves a sheet. × closes it, ‹ goes back one step. The bottom holds one forward action.</div>
         <div class="rule">Cards only for controls and lists. White with a 1px line and radius 16. No shadows.</div>
@@ -479,7 +486,7 @@ select {
   </div>
 </div>
 
-<script src="vendor/pinyin-pro.js?v=202610252249"></script>
+<script src="vendor/pinyin-pro.js?v=202610261233"></script>
 <script>
 const defaults = [
   {h:"你家有几口人？", p:"Nǐ jiā yǒu jǐ kǒu rén?", e:"How many people are in your family?"},

@@ -93,7 +93,7 @@ Rules
 - Saved pinyin and English stay as they are when you change the Chinese. Clear a field to fill it in again.
 - Edit from the card closes with ×. Edit from the list goes back to it with ‹.
 - Settings has Start over, which moves every learned sentence back to Practice, and Delete all sentences in `warn-text`, which empties the list. Each row says how many it affects, and both ask first.
-- With no sentences at all, the card says No sentences yet and points to +.
+- An empty list shows one quiet line in the middle of the card, No sentences yet, in 17 regular `muted`. No count, no second line. The Add a sentence button below is the one action.
 - Pinyin fills in on the phone as you type the Chinese. English comes from the free MyMemory translation service a moment later.
 - Both stay editable. Once you type in a field yourself, Shuo stops filling it.
 - If the English can't be fetched, a calm note says so and you can add without it.

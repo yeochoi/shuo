@@ -125,6 +125,12 @@ svg { display: block; }
 .empty-hero .pin { color: var(--muted); font-size: 17px; line-height: 24px; }
 .empty-hero .han { font-family: var(--font-sans); font-size: 34px; line-height: 38px; letter-spacing: -0.02em; }
 
+/* An empty list is a quiet grey note in the middle of the card. The Add a sentence button below is the one action. */
+.none-hero #sentenceView { justify-content: center; align-items: center; text-align: center; }
+.none-hero .card-top, .none-hero .status, .none-hero .pin, .none-hero .eng { display: none; }
+.none-hero .sent-body { padding-top: 0; margin: auto 0; }
+.none-hero .han { font-family: var(--font-sans); font-size: 17px; line-height: 24px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
+
 /* Toast */
 .toast {
   position: fixed; left: 50%; bottom: calc(var(--bottom) + 24px); transform: translate(-50%, 20px);
@@ -548,12 +554,14 @@ function render() {
   $('practiceControls').hidden = empty;
   $('emptyControls').hidden = !empty;
   $('hero').classList.toggle('empty-hero', empty);
+  $('hero').classList.toggle('none-hero', empty && all.length === 0);
   if (empty) {
     const none = all.length === 0;
-    $('count').textContent = none ? 'Your list is empty' : `${learned().length} learned`;
+    // An empty list says it once. The Add a sentence button below is the one action.
+    $('count').textContent = none ? '' : `${learned().length} learned`;
     $('han').textContent = none ? 'No sentences yet' : 'All learned';
     $('han').classList.remove('long1', 'long2');
-    $('pin').textContent = none ? 'Add one with + to start practicing.' : 'Add a new sentence to keep practicing.';
+    $('pin').textContent = none ? '' : 'Add a new sentence to keep practicing.';
     $('emptyNote').hidden = none;
     $('eng').textContent = '';
   } else {

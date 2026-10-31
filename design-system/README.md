@@ -71,6 +71,7 @@ Rules
 - Sheets have one rule. Top left leaves. × closes a first screen, ‹ goes back one step, like Design system back to Settings. The bottom holds one forward action, like Add sentence or Add. Settings has no bottom button, changes save as you tap.
 - Settings has a Design system row that opens a short version of this book inside the app.
 - On laptops sheets open in the middle over a dimmed page.
+- Sheets move like iOS. On phones a sheet rises from the bottom and the page steps back behind it, smaller and dimmed. A sheet opened from another sheet slides in from the right, and ‹ slides it back. Pull the grabber or the title down to close. Segmented switches slide to the chosen option.
 
 ## Practice
 
